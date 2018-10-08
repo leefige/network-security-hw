@@ -24,23 +24,28 @@
         ```bash
         $ ifconfig ens33 192.168.26.129 netmask 255.255.255.0
         ```
+
         ![A config](fig/Aconf.PNG)
     - 主机B设置IP地址为192.168.26.3/27，由于重设子网掩码，路由会被清除，因此重新设置路由为192.168.26.2
         ```bash
         $ ifconfig ens33 192.168.26.3 netmask 255.255.255.224
         $ route add default gw 192.168.26.2
         ```
+
         ![B config](fig/Bconf.PNG)
 4. 尝试互相通信，会发现主机A和B都可以ping通对方
     - A ping B
+
         ![A ping B](fig/ApingB.PNG)
     - B ping A
+
         ![B ping A](fig/BpingA.PNG)
 5. 进一步分析，对A而言，由于子网掩码是255.255.255.0，因此两台主机的IP地址都在同一子网内，所以A可以直接向B发送数据包；但对B而言，由于其子网掩码为255.255.255.224，所以会判断A不在自己的子网内，于是会将数据包先发给网关192.168.26.2，再由网关转达给主机A，这一点可以用tcpdump观察
     ```bash
     $ tcpdump -i ens33
     ```
     主机B的结果如下，可以看到数据包通过了网关：
+
     ![B tcpdump](fig/Btcpdump.jpg)
     另外，我们还能看到在第一次通过网关转达后，主机B就可以和主机A直接通信，这是因为更新了路由表。随后会有一次ARP包，是192.168.26.129询问192.168.26.3的MAC地址，这应该是为了防止ARP欺骗而清空了ARP缓存，于是发出更新ARP请求
 
