@@ -20,9 +20,9 @@
     - IP: 192.168.1.104
 - **注意**：由于使用物理机环境而非kali虚拟机，因此部分操作与实验指示书有所不同
 
-## 要求1
+## 实验步骤
 
-### 实验步骤
+### 要求1
 
 1. 首先将三台主机连入子网，为server配置http服务，随后用客户机victim通过浏览器访问服务器ip地址，可以得到 http response 如下：
 
@@ -33,7 +33,7 @@
     ```py
         server_ip = "192.168.1.107"
         victim_ip = "192.168.1.104"
-        
+
         # 获取目标ip的MAC地址
         def get_mac(ip_address):
             ans, unans = srp(Ether(dst="ff:ff:ff:ff:ff:ff")/ARP(pdst=ip_address), timeout=2, retry=10)
@@ -94,84 +94,21 @@
 5. 此后，victim再向server发送请求时，attacker都会监听到HTTP会话，如，victim再次通过浏览器访问server时，attacker可以监控到相应的GET和Response：
     ![transparent](fig/transparent.PNG)
 
-## 要求2
+### 要求2
 
-### 实验步骤
+1. attacker在`mitmproxy`中开启对server (192.168.1.107) 的流量拦截：
+    ![intercept](fig/intercept.PNG)
+2. victim再次发送GET请求时，Response将被截获：
+    ![intercept response](fig/intercept_response.PNG)
+3. 这时attacker即可对包进行编辑，从而达到篡改会话的目的，如这里我们进行HTTP会话注入，修改回复内容：
+    - 原始内容：
+        ![response_origin](fig/response_origin.PNG)
 
-1. B 修改 MAC 地址冒充 A 骗过校园网认证。
-
-   B 首先观察自己的 IP 和 MAC 地址：
-
-   ```bash
-   ifconfig
-   ```
-
-   ![B_IP](./fig/B_IP.png)
-
-   可看到其 IP 为 183.173.36.172，MAC 为 78:4f:43:5d:85:44。
-
-   使用如下指令将 MAC 地址改为 A 的 MAC 地址：
-
-   ```bash
-   sudo ifconfig en0 ether c4:9d:ed:03:dd:40
-   ```
-
-   此时使用 `ifconfig` 观察，MAC 地址易发生改变，但 IP 地址尚未变化。
-
-   ![change_IP](./fig/change_IP.png)
-
-   但很快 B 的网络状态从“已连接”变成了“正在连接”，表示其在等待分配新的 IP 地址。待网络状态变回“已连接”，再次使用 `ifconfig` 观察，发现路由器已经根据 B 此时的 MAC 地址（A 的 MAC 地址），将 A 的 IP 地址给了 B。
-
-   ![B_after](./fig/B_after.png)
-
-   此时 B 打开浏览器上网，进入 net.tsinghua.edu.cn，发现无线网连接确实已被 A 同学认证，并且可以访问互联网。但同时也观察到，当 A、B 同时上网时，网络会变得非常卡顿，有时也会出现无法上网，需要多次刷新的情况。
-
-2. 攻击者（B）获取子网中其他用户的 MAC 地址。
-
-   使用 nmap 工具对子网进行扫描：（子网掩码为 255.255.224.0，共 19 位）
-
-   ```bash
-   nmap -sP 183.173.32.0/19
-   ```
-
-   ![nmap](./fig/nmap.png)
-
-   ![nmap_res](./fig/nmap_res.png)
-
-   发现使用此方法并不能有效获取子网内其他用户的 IP 以及 MAC 地址。
-
-   因此使用如下指令，查看系统对 ARP 的缓存：
-
-   ```bash
-   arp -a
-   ```
-
-   ![arp](./fig/arp.png)
-
-   可看到输出了所有在 nmap 时缓存的 IP 地址及其对应的 MAC 地址，而 B 的 IP（183.173.38.125）和 MAC（c4:9d:ed:03:dd:40）也在其中。
-
-   但此方法的缺陷在于，上表中的 IP 并不都是终端设备。若是 B 将 MAC 改为了非终端设备的 MAC 地址，会产生虽分配到相应 IP 地址，却无法正常上网，甚至频繁掉线的现象。在尝试 2 次不同的 IP 对应的 MAC 地址后，我们发现上图中高亮选中的 MAC 地址属于一个终端设备。通过如下命令修改 B 的 MAC：
-
-   ```bash
-   sudo ifconfig en0 ether 9c:e3:3f:ba:a5:5f
-   ```
-
-   一段时间后使用 `ifconfig` 观察：
-
-   ![anonymous](./fig/anonymous.png)
-
-   发现成功修改了 MAC 地址，并且被自动分配到了该 MAC 地址对应的 IP 183.173.39.169。
-
-   在浏览器中输入 net.tsinghua.edu.cn，结果如下：
-
-   ![succeed](./fig/succeed.png)
-
-   说明 B 确实使用这种方法成功盗用了陌生人的校园网账号，校园网验证方式存在漏洞。
-
-3. 如果 B 修改 MAC 地址和 IP 地址冒充 A，可以做什么？
-
-   在一些公共场合下，很多 WIFI 是无密码，开放连接，但是连接后需要通过短信或微信实名认证。在这种情况下，B 可以利用这种方式随机选取 A 并冒充，达到免认证上网，从而达到 B 的访问网络的真实身份（如 B 的 MAC 地址）被隐匿。
+    - 修改内容：
+        ![response_edited](fig/response_edited.PNG)
+4. attacker完成修改后，即可按`a`放行，victim将收到被篡改过的回复：
+    ![browser_poison](fig/browser_poison.PNG)
 
 ## 分工情况
 
-两实验均由两人共同完成。其中，李逸飞完成了第一题的实验报告，乔逸凡完成了第二题的实验报告。
+
