@@ -92,23 +92,21 @@
     ```
 
 5. 此后，victim再向server发送请求时，attacker都会监听到HTTP会话，如，victim再次通过浏览器访问server时，attacker可以监控到相应的GET和Response：
-    ![transparent](fig/transparent.PNG)
+    ![transparent](fig/transparent.png)
 
 ### 要求2
 
 1. attacker在`mitmproxy`中开启对server (192.168.1.107) 的流量拦截：
-    ![intercept](fig/intercept.PNG)
+    ![intercept](fig/intercept.png)
 2. victim再次发送GET请求时，Response将被截获：
-    ![intercept response](fig/intercept_response.PNG)
+    ![intercept response](fig/intercept_response.png)
 3. 这时attacker即可对包进行编辑，从而达到篡改会话的目的，如这里我们进行HTTP会话注入，修改回复内容：
     - 原始内容：
-        ![response_origin](fig/response_origin.PNG)
+        ![response_origin](fig/response_origin.png)
 
     - 修改内容：
-        ![response_edited](fig/response_edited.PNG)
+        ![response_edited](fig/response_edited.png)
 4. attacker完成修改后，即可按`a`放行，victim将收到被篡改过的回复：
     ![browser_poison](fig/browser_poison.PNG)
 
 ## 分工情况
-
-
