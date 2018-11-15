@@ -24,7 +24,7 @@
 
 ### 要求1
 
-1. 首先将三台主机连入子网，为server配置http服务：
+1. 首先将三台主机连入子网，并为server配置http服务：
 
     ```bash
         $ python3 -m http.server 80
