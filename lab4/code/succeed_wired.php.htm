@@ -1,0 +1,214 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>清华大学校园网&nbsp;Tsinghua&nbsp;University&nbsp;Network</title>
+
+<link rel="stylesheet" type="text/css" href="css/styles_wired_0108.css" />
+
+<link rel="shortcut icon"
+href="http://net.tsinghua.edu.cn/image/icon16-purple.ico" type="image/x-icon" />
+<link rel="icon" href="http://net.tsinghua.edu.cn/image/icon32.png"  sizes="32x32" type="image/png" />
+<script type="text/javascript" src="/js/jquery.min.js"></script>
+<script type="text/javascript" src="js/jquery.cookie.js"></script>
+<script language="javascript" src="js/portal.main.min.js"></script>
+<script language="javascript" src="js/hashes.min.js"></script>
+<script type="text/javascript">
+var tm;
+var err=0;
+function postData(theAction,theMethod,theData)
+{
+  var thePost = (window.XMLHttpRequest)? new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");
+  switch(theMethod)
+  	{
+  		case "post":
+  			thePost.open("POST",theAction,false);
+  			thePost.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+  			thePost.send(theData);
+  			break;
+  		case "get":
+  			thePost.open("GET",theAction+"?"+theData,false);
+  			thePost.send("");
+  			break;
+  		default:
+  			return "";
+  	}
+ 	return thePost.responseText;
+}
+
+function format_time1(sec)
+ {
+ 	var h=Math.floor(sec/3600);
+ 	var m=Math.floor((sec%3600)/60);
+ 	var s=sec%3600%60;
+ 
+ 	if(h<10)
+ 	{
+ 		h = "0"+h;
+ 	}
+ 	if(m<10)
+ 	{
+ 		m = "0"+m;
+ 	}
+ 	if(s<10)
+ 	{
+ 		s="0"+s;
+ 	}
+ 	var out=h+":"+m+":"+s;
+ 	return out;
+ }
+ 
+ function format_flux(byte)
+ {
+ 	if(byte>(1000*1000*1000))
+ 		return (format_number((byte/(1000*1000*1000)),2)+"G");
+ 	if(byte>(1000*1000))
+ 		return (format_number((byte/(1000*1000)),2)+"M");
+ 	if(byte>1000)
+ 		return (format_number((byte/1000),2)+"K");
+ 	return byte+"B";
+ }
+ 
+ function format_number(num, count)
+ {
+ 	var n=Math.pow(10, count);
+ 	var t=Math.floor(num*n);
+ 	return t/n;
+ }
+ 
+var tm=0;
+function myclock()
+{
+ 	tm ++;
+ 	document.getElementById('clock').innerHTML=format_time1(tm);
+ 	setTimeout("myclock()", 1000);
+}
+
+function do_logout()
+{
+	var res = postData("/cgi-bin/do_logout", "post", "");
+	if(res == "logout_ok")
+	{
+		alert("连接已断开");
+		window.close();
+		location="index_wired.html";
+	}
+	else if(res == "not_online_error")
+	{
+		alert("您不在线上");
+		window.close();
+	}
+	else
+	{
+		alert("操作失败");
+	}
+}
+
+function goto_services()
+{
+	document.form1.action="services.php";
+	document.form1.target="_blank";
+	document.form1.submit();
+	//document.location.reload();
+}
+</script>
+</head>
+
+<body id="popup">
+<form name="form1" method="post">
+</form>
+	<div id="center">
+		<div class="greet">欢迎，&nbsp;Welcome,</div>
+        <div class="triangle_greet"></div>
+        <div class="corner"></div>
+        <div id="info">
+        	<h2 class="user_name" id="uname">liyifei15</h2>
+            <a id="account" href="https://usereg.tsinghua.edu.cn" target="__blank" title="自服务&#10;Account&nbsp;Settings">自服务
+                <p class="english">Account&nbsp;Settings</p></a>
+                        <div id="info_content">
+                <div class="label_text">已连接<p class="english">Duration</p></div>
+                <div class="content_text"><span id="clock" style="color:#ec6677"></span><span class="unit"></span></div>
+                <div class="label_text">已用流量(IPv4)<p class="english">Usage</p></div>
+                <div class="usage_bar">
+                    <ul class="calibration"><li>55</li><li>45</li><li>35</li><li>25</li></ul>
+                    <div id="usage_value" style="width:17px;"></div>
+                    <div class="stripe"></div>
+                    <div class="stripe second_stripe"></div>
+                    <div class="content_text"><span class="unit" id="usage_flux"></span></div>
+                </div>
+            </div>
+                    </div>
+        <div class="bar">
+            <form id="form3" method="post">
+                <input id="user_ip" type="hidden" value="59.66.197.32"></input>
+                <input id="ac_id" type="hidden" value="1"></input>
+                <input id="username" type="hidden" value="liyifei15"></input>
+        	   <button class="disconnect" type="submit">断开连接&nbsp;Disconnect</button>
+        	</form>
+        </div>
+        <ul id="links">
+        	<li><a id="link_info" href="http://info.tsinghua.edu.cn" target="_new" title="清华信息门户&#10;info.tsinghua">Info</a></li>
+            <li><a id="link_lib" href="http://lib.tsinghua.edu.cn/" target="_new" title="清华图书馆&#10;lib.tsinghua">Lib</a></li>
+            <li><a id="link_learn" href="http://learn.tsinghua.edu.cn/" target="_new" title="清华网络学堂&#10;learn.tsinghua">Learn</a></li>
+            <li><a id="link_mail" href="http://mail.tsinghua.edu.cn/" target="_new" title="清华邮箱&#10;mail.tsinghua">Mail</a></li>
+        </ul>
+
+   	</div>
+   	<script language="javascript">
+//   		var l = location.search+"";
+//			l = l.substring(1);
+//
+//			var arr=l.split(',');
+//			//document.getElementById("uname").innerHTML=arr[1];
+//
+//			//计算已用流量
+//			var f=(Number(arr[2]))/1000000000;
+//			var len=0;
+//			if(f>50)
+//			{
+//				len = 280;
+//			}
+//			else
+//			{
+//				len = f*(264/50);
+//			}
+//			if(arr[4])
+//			{
+//				tm = Number(arr[4]);
+//			}
+//
+//			myclock();
+//			document.getElementById("usage_value").style.width=len+"px";
+//			document.getElementById("usage_flux").innerHTML=format_flux(arr[2]);
+function newXMLHttpRequest() {
+    return window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");
+}
+// Synchronous POST request.
+function post(url, data) {
+    var req = newXMLHttpRequest();
+    req.open('POST', url, false);
+    req.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+    req.send(data);
+    return req.responseText;
+}
+$(document).ready(function() {
+    var r = post(location.protocol+'//' + location.hostname + '/rad_user_info.php');
+    if (r == ""){
+        $("#info_content").hide();
+    }
+    var a = r.split(',');
+    if (a[0] != "") {
+        $('#uname').text(a[0]);
+    }
+    var f = a[6] / 1000000000;
+    var len = f > 55 ? 280 : f * 264 / 55;
+    //tm = Number(a[4]);
+    tm = Number(a[2]-a[1]);
+
+    $('#usage_value').css('width', len + 'px');
+    $('#usage_flux').text(format_flux(a[6]));
+    myclock();
+});
+   	</script>
+</body>
+</html>

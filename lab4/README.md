@@ -107,7 +107,9 @@ John the Ripper工具在破译时会首先用字典尝试常见的密码，在�
 
 通过调研、实验操作等各种手段，给出你所认为的认证方法和过程（包括SSO），指出可能的威胁（给出具体的攻击方法，尽可能验证）
 
-### 清华校园网联网方式
+### 0) 实验背景
+
+#### 清华校园网联网方式
 
 当前清华校园网包括有线的Ethernet（支持IPv4和IPv6，仅考虑IPv4）和无线网络（Tsinghua, Tsinghua 5G, 不考虑DIVI等支持IPv6协议栈的无线连接）。联网过程分为如下步骤：
 
@@ -117,17 +119,15 @@ John the Ripper工具在破译时会首先用字典尝试常见的密码，在�
 
 清华校园网支持的认证方式主要有两种：1）通过web页面进行认证；2）通过客户端进行认证。本实验将对PC端上两种认证方式进行分析
 
-### 实验平台
+#### 实验平台
 
 - OS: Windows 10 Professional Build 1809
 - 浏览器: Microsoft Edge 44.17763.1.0
 - 认证客户端: TUnet 2015版
 
-### 1) Web页面认证
+### 1) Web页面认证（Wireless）
 
-当前清华校园网的web页面认证已经支持HTTPS，下面的分析均基于HTTPS，通过验证，HTTP的过程相似。
-
-另外，本实验针对无线网Tsinghua进行实验，Ethernet理论上应该过程类似，但近期似乎由于校园网的一些变动，Ethernet需要通过`auth4.tsinghua.edu.cn`验证，而非像无线网络一样使用`net.tsinghua.edu.cn`，因此可能会有细节上的不同之处。
+当前清华校园无线网的web页面认证已经支持HTTPS，下面的分析均基于HTTPS，通过验证，HTTP的过程相似。
 
 #### 工具配置
 
@@ -303,19 +303,6 @@ function do_logout() {
 	}
 	
 	return;
-    var code = {
-        'logout_ok': '连接已断开',
-        'not_online_error': '您不在线上'
-    }[res];
-
-    if (code) {
-        alert(code);
-       	window.location.href="/";
-        //window.close();
-    } else {
-        alert('操作失败');
-       	window.location.href="/";
-    }
 }
 ```
 
@@ -333,9 +320,230 @@ function do_logout() {
 
 ![](fig/web/http_cookie.jpg)
 
-### 2) 客户端(SRUN)认证
+### 2) Web页面认证（Ethernet）
 
-对于客户端，`Fiddler`未能成功抓取到其流量，于是使用`Wireshark`抓取流量，抓到的包位于`package/`目录下。
+近期似乎由于校园网的一些变动，直接接入交换机的Ethernet需要通过`auth4.tsinghua.edu.cn`验证，而非像无线网络一样使用`net.tsinghua.edu.cn`，经过检验，实际上有很多不同之处。
+
+#### 过程分析
+
+##### 登录
+
+类似的，抓包结果如下
+
+![](fig/ether/login_all.PNG)
+
+注意到，尽管在输入时用了HTTPS地址`https://auth4.tsinghua.edu.cn`，但之后自动跳转都变成了HTTP，这样看似会有安全问题，但随后的分析显示，HTTP并不会导致类似无线认证那样的隐患。
+
+有线认证步骤有所不同，这里应该是使用了SRUN协议，首先经过两次自动跳转，请求`/ac_detect.php`检测认证服务器，接着向`srun_portal_pc.php`发送GET请求获取登录页面：
+
+![](fig/ether/1.page.PNG)
+
+部分HTML如下：
+
+```html
+<head>
+    ...
+    <script type="text/javascript" src="/script/md5.js"></script>
+    <script type="text/javascript" src="/js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/jquery.cookie.js"></script>
+    <script language="javascript" src="js/portal.main.min.js"></script>
+    <script language="javascript" src="js/hashes.min.js"></script>
+    ...
+</head>
+
+<body>
+    <div id="center">
+        ...
+        <div id="content">
+            ...
+            <div id="login">
+                <form name="form2" id="form2" action="srun_portal_pc.php?ac_id=1&" method="post">
+                    ...
+                    <label>
+                        <div class="label_text">用户名<p class="english">User&nbsp;ID</p>
+                        </div>
+                        <input type="text" name="username" id="username" value="" autocorrect="off" autocapitalize="off"
+                            onfocus="hidden_account()">
+                        <div class="instruction" id="account">校园网账户<p class="english">Account&nbsp;of&nbsp;Tsinghua&nbsp;University&nbsp;Network</div>
+                    </label>
+                    <label>
+                        <div class="label_text">密码<p class="english">Password</p>
+                        </div>
+                        <input type="password" name="password" id="password" autocorrect="off" autocapitalize="off">
+                    </label>
+                    <label id="remember" style="margin-left: 46px;">
+                        <input type="checkbox" name="save_me" id="cookie" value="yes" checked>
+                        <div class="checkbox_text" style="color: #93278f;font-weight: 600;">访问校外（IPv4）网络<p class="english">Access
+                                to the Internet</p>
+                            <p class="english">(IPv4)</p>
+                        </div>
+                    </label>
+                    <a id="account" href="https://usereg.tsinghua.edu.cn" target="__blank" title="自服务&#10;Account&nbsp;Settings">自服务
+                        <p class="english">Account&nbsp;Settings</p></a>
+                    <input type="submit" class="connect" name="connect" id="connect" value="连接&nbsp;Contect">
+                </form>
+            </div>
+            ...
+        </div>
+        ...
+    </div>
+    ...
+</body>
+```
+
+表单内容类似，不同之处在于不再调用自行编写的函数，而是通过jQuery定义了表单提交行为。
+
+另外比较tricky的一点是，原来的“记住我”不再使用，改为了“访问校外（IPv4）网络”，但表单id并没有改，还是“cookie”。不过事实上 **已经取消了cookie** ，这对安全性是一种提升，也使得HTTP传输内容不再包含用户名和密码的明文cookie。
+
+分析一下对于表单提交的相应动作，在`portal.main.min.js`中：
+
+```js
+    $("#form2").submit(function(e) {
+        e.preventDefault();
+        var acid = $("#ac_id"),
+            uname = $("#username"),
+            pwd = $("#password"),
+            uip = $("#user_ip");
+        ...
+
+        //login  认证
+        var qData = {
+            "action": "login",
+            "username": uname.val(),
+            //"org_password": pwd.val(),
+            "password": pwd.val(),
+            "ac_id": acid.val(),
+            "ip": "",
+            "double_stack": "1"
+        };
+        $.getJSON("/cgi-bin/srun_portal", qData, function(data) {
+            if ($('#cookie')[0].checked == false) {
+                uname.val(uname.val().replace("@tsinghua", ''));
+            }
+            if (data.error == "ok") {
+                $.cookie('access_token', data.access_token);
+                qData.password = pwd.val();
+
+                var redirect = getUrlParam('userurl');
+                if (redirect != ""){
+                	location.href = redirect;
+                } else {
+	                if ($('#cookie')[0].checked == false) {
+	                    location.href = location.protocol + "//" + location.hostname + "/succeed_wired.php?ac_id=" + acid.val() + "&username=" + data.username + "&ip=" + data.client_ip + "&access_token=" + data.access_token + "&access=no";
+	                }else {
+	                    location.href = location.protocol + "//" + location.hostname + "/succeed_wired.php?ac_id=" + acid.val() + "&username=" + data.username + "&ip=" + data.client_ip + "&access_token=" + data.access_token;
+	                }
+                }
+                return false;
+            }
+            ...
+        });
+    });
+```
+
+可以看到，对于“cookie”（实际上是能否访问校外）的操作是，如果只能访问校内网，则在用户名后加入`@tsinghua`。
+
+将登录信息组装成JSON后，调用定义好的`getJSON()`向服务器发送GET请求，该函数的认证方式很值得分析：
+
+```js
+    getJSON: function (url, data, callback) {
+        if (url.match("srun_portal") != null || url.match("get_challenge") != null) {
+            var enc = "s" + "run" + "_bx1",
+                n = 200,
+                type = 1,
+                base64 = new Hashes.Base64();
+            if (data.action == "login") { //login
+                $data = data;
+                return jQuery.getJSON(url.replace("srun_portal", "get_challenge"), {
+                    "username": $data.username,
+                    "ip": $data.ip,
+                    "double_stack": "1"
+                }, function (data) {
+                    var token = "";
+                    if (data.res != "ok") {
+                        alert(data.error);
+                        return;
+                    }
+                    token = data.challenge;
+                    //$data.password = $data.org_password;
+                    $data.info = "{SRBX1}" + base64.encode(jQuery.xEncode(JSON.stringify({
+                        "username": $data.username,
+                        "password": $data.password,
+                        "ip": $data.ip,
+                        "acid": $data.ac_id,
+                        "enc_ver": enc
+                    }), token));
+                    //alert($data.info);
+                    var hmd5 = new Hashes.MD5().hex_hmac(token, data.password);
+                    $data.password = "{MD5}" + hmd5;
+                    $data.chksum = new Hashes.SHA1().hex(token + $data.username + token + hmd5 + token + $data.ac_id + token + $data.ip + token + n + token + type + token + $data.info);
+                    $data.n = n;
+                    $data.type = type;
+                    return get(url, $data, callback, "jsonp");
+                });
+            }
+            ...
+        }
+```
+
+用户点击“连接”后，首先会发出一个`get_challenge`的请求，如下：
+
+![](fig/ether/2.challenge.PNG)
+
+对于response，做如下处理：
+
+1. 服务器的response会携带一个叫做`challenge`的令牌（token）
+2. 使用该token，调用定义好的`xEncode()`对用户登录信息（用户名，密码，IP，ac_id，enc_ver）进行编码
+3. 再用`hashes.js`中的base64对上面的结果编码，并加`{SRBX1}`前缀，将结果作为`info`项插入JSON
+4. 用`hashes.js`中的md5，利用token对JSON中的密码编码
+5. 计算校验和
+6. 将JSON通过GET请求发给服务器，请求如下（用户名后带有`@tsinghua`，说明只能访问校内网）：
+
+![](fig/ether/2.login.PNG)
+
+该方法的安全之处在于，通过 **令牌交换** ，在加密中混入了随机因素，密码安全性大大提高，又通过`info`和校验和保证了信息的完整性和一致性（如对IP地址的验证），提高安全性能。而且令牌还有验证身份真实性的功能，服务器可以确定是否在与真实的客户端（拥有正确token）通信。此外，利用这种方法，即使HTTP明文传输也可以保证密码的安全（虽然用户名仍然可见）。
+
+相较无线网，cookie中不再记录用户名和密码的明文，只记录了是否能访问校外，若不能，则`off_campus=off`，否则`off_campus=null`
+
+成功后会请求`/succeed_wired.php`并收到成功页面。
+
+![](fig/ether/3.success.PNG)
+
+##### 登出
+
+登出时使用同一js脚本，只是表单变了。登出表单处理如下：
+
+```js
+    $("#form3").submit(function (e) {
+        e.preventDefault();
+        var uname = $("#username"),
+            uip = $("#user_ip");
+        //logout  注销
+        var pData = {
+            "action": "logout",
+            "username": uname.val(),
+            "ac_id": GetQueryString('ac_id'),
+            "ip": "",
+            "double_stack": "1"
+        };
+        $.getJSON("/cgi-bin/srun_portal", pData, function (data) {
+            if (data.error == "ok") {
+
+                alert("下线成功(Logoff Success)");
+                window.setTimeout("window.location='http://info.tsinghua.edu.cn/'", 2000);
+                return false;
+            }
+            ...
+        });
+```
+
+使用类似的令牌交换方法，发送logout请求，成功后，将超时跳转至info页面（实际测试，在Chrome下可跳转，在Edge下无法跳转）。登出结果如下：
+
+![](fig/ether/4.logout.PNG)
+
+### 3) 客户端(SRUN)认证
+
+似乎由于Ethernet使用新的协议，原有客户端（2015版）不再兼容，因此只实验无线网。对于客户端，`Fiddler`未能成功抓取到其流量，于是使用`Wireshark`抓取流量，抓到的包位于`package/`目录下。
 
 #### 过程分析
 
@@ -382,7 +590,13 @@ $ dig net.tsinghua.edu.cn
 
 利用POST提交了logout的请求，同时还发送了用户名和mac地址，推测用于定位要下线的用户。
 
-### 可能的攻击方案
+### 4) PC端三种认证方式比对
+
+目前的无线网认证是安全性能最低的，尤其是其允许HTTP传输，若用户选择了本地保存密码，则其信息将在cookie中被明文传输，非常脆弱。
+
+客户端和新的Ethernet认证方式都比较安全，明文不会以任何形式出现在链路上。相较而言，可能客户端又更为安全，因为通过专用的TCP连接进行通信，而且客户端可拓展性更强，可能可以支持更多功能（如超时自动下线等）。
+
+### 5) 存在的漏洞和可能的攻击方案
 
 【待补充】
 
