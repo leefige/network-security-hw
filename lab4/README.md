@@ -363,7 +363,7 @@ $ dig net.tsinghua.edu.cn
 3. 第三次连接建立，进行一次HTTP通信（41 & 42），这次对应着用户点击“连接”按钮，通信内容为：
     ![](fig/client/3.login.PNG)
     通过POST提交了表单，表单具体内容如下
-    ![](fig/client/3.post.PNG)
+    ![](fig/client/3.post.jpg)
     可见这里的密码已经是加密过的了
 
 ##### 登出
@@ -378,7 +378,7 @@ $ dig net.tsinghua.edu.cn
 
 表单内容：
 
-![](fig/client/4.post.PNG)
+![](fig/client/4.post.jpg)
 
 利用POST提交了logout的请求，同时还发送了用户名和mac地址，推测用于定位要下线的用户。
 
