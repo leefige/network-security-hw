@@ -1,0 +1,97 @@
+﻿<!doctype html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0;">
+    <title>清华大学无线校园网 Tsinghua University Wireless Network</title>
+    <link rel="stylesheet" type="text/css" href="/css/wireless.css" />
+    <link rel="stylesheet" type="text/css" href="/css/common.css" />
+    <link rel="shortcut icon" href="/image/icon16-yellow.ico" type="image/x-icon" />
+    <link rel="icon" href="/image/icon32.png" sizes="32x32" type="image/png" />
+    <script src="/script/jquery.js"></script>
+    <script src="util.js"></script>
+    <script src="md5.js"></script>
+    <script src="login.js"></script>
+</head>
+
+<body id="non_phone">
+    <div id="center">
+        <div id="head">
+            <div id="title">
+                <p>清华大学无线校园网</p>
+                <p class="english">Tsinghua University Wireless Network</p>
+            </div>
+        </div> <!-- start -->
+        <div class="qrcode" style="margin-right:220px;">
+            <center>
+                <p><img src="../image/qrcode_for_258.jpg" width="100" height="100"></p>
+                <font size="2">欢迎关注“清华大学信息服务”</font>
+            </center>
+        </div> <!-- end -->
+        <div id="content">
+            <div id="attsinghua" style="    position: absolute;    top: -137px;    right: 0px;"><a href="http://mobileapp.tsinghua.edu.cn"
+                    target="_blank"><img src="/image/wireless/attsinghua.png" style="    width: 215px;    height: 105px;"></a></div>
+            <div class="greet">您好，&nbsp;Hello,</div>
+            <div class="triangle_greet"></div>
+            <div id="notice_box">
+                <div class="corner"></div>
+                <div id="notice">
+                    <p>&nbsp;<br /><br />&nbsp;</p>
+                    <div width="320" align="center">
+                        <marquee onmouseover="this.stop()" onmouseout="this.start()" scrollAmount="1.0" width="300"
+                            align="left" height="90" direction="up" border="0" id="msg" style="color:white;"> </marquee>
+                    </div>
+                </div>
+            </div>
+            <div id="login">
+                <form name="login_form" id="login_form" action="/do_login.php" method="post" onkeydown="if(event.keyCode==13)do_login();"
+                    onsubmit="do_login();"> <input type="hidden" name="is_pad" value="2"> <input type="hidden" name="n"
+                        value="100"> <input type="hidden" name="type" value="1"> <input type="hidden" name="drop" value="0">
+                    <input type="hidden" name="action" value="login"> <input type="hidden" name="ac_id" id="ac_id"
+                        value="1">
+                    <div class="field">
+                        <div class="label_text" for="uname">用户名<p class="english">User&nbsp;ID</p>
+                        </div> <input type="text" name="uname" id="uname" value="" autocorrect="off" autocapitalize="off">
+                    </div>
+                    <div class="field">
+                        <div class="label_text" for="pass">密码<p class="english">Password</p>
+                        </div> <input type="password" name="pass" id="pass" autocorrect="off" autocapitalize="off">
+                    </div>
+                    <div class="field" id="remember"> <input type="checkbox" name="save_me" id="cookie" value="yes">
+                        <div class="checkbox_text">记住密码<p class="english">Remember&nbsp;Password</p>
+                        </div>
+                    </div> <a id="account" href="https://usereg.tsinghua.edu.cn" title="账户设置&#10;Account&nbsp;Settings">账户设置
+                        <p class="english">Account&nbsp;Settings</p></a> <input type="button" name="connect" id="connect"
+                        onclick="do_login();">
+                </form>
+            </div>
+            <div class="triangle_login"></div>
+            <div id="download">
+                <ul id="system">
+                    <!--li><a class="windows" href="/files/Tunet2015.exe" title="Windows">Windows</a></li>          <li><a class="mac" href="/files/TUNet_mac_os_x86.zip" title="MacOS">MacOS</a></li>          <li><a class="linux" href="/files/TUNet_linux.tar.gz" title="Linux">Linux</a></li>          <li><a class="android" href="/files/Tunet2015.apk" title="Android">Android</a></li>          <li><a class="ios" href="/files/TUNet_IOS.zip" title="iOS">iOS</a></li-->
+                    <li><a class="windows" href="/files/Tunet_win.rar" title="Windows">Windows</a></li>
+                    <!--li><a class="mac"  title="MacOS">MacOS</a></li-->
+                    <li><a class="mac" href="/files/Tunet2015.dmg" title="MacOS">MacOS</a></li>
+                    <li><a class="linux" href="/files/Tunet_linux.rar" title="Linux">Linux</a></li>
+                    <li><a class="android" href="/files/Tunet2015.apk" title="Android">Android</a></li>
+                    <li><a class="ios" title="iOS">iOS</a></li>
+                </ul>
+            </div>
+            <ul id="widget">
+                <li class="bookmark"><a href="javascript:addBookmark('TUNet 无线网登录');" title="收藏&#10;Bookmark&nbsp;This&nbsp;Page">收藏<p
+                            class="english">Bookmark&nbsp;This&nbsp;Page</p></a></li>
+                <li class="help"><a href="/help/help.html" title="帮助&#10;Help">帮助<p class="english">Help</p></a></li>
+                <li class="contact">
+                    <div class="title">联系<p class="english">Contact</p>
+                    </div>
+                    <div class="detail english">+86-10-62784859<a href="mailto:its@tsinghua.edu.cn" title="电子邮件&#10;Email">its@tsinghua.edu.cn</a></div>
+                </li>
+            </ul>
+        </div>
+        <div id="foot">清华大学信息化技术中心<p class="english">Information Technology Center of Tsinghua University</p>
+        </div>
+    </div>
+</body>
+
+</html><!-- vi: se sw=2: -->
