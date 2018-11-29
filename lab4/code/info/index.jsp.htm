@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=GBK" />
+	<!-- <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE8" /> -->
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+	<title>�廪��ѧ��Ϣ�Ż�</title>
+	<link href="initial/all/css/index_all.css" rel="stylesheet" type="text/css" />
+	<link type="text/css" rel="stylesheet" href="/style/css/style.css" />
+	<script type="text/javascript" src="http://info.tsinghua.edu.cn:80/script/jquery-1.7.2.min.js"></script>
+	<script type="text/javascript" src="http://meta.cic.tsinghua.edu.cn/script/json2.js"></script>
+	<script type="text/javascript" src="http://meta.cic.tsinghua.edu.cn/script/meta.js" charset="UTF-8"></script>
+	<script type="text/javascript" src="http://meta.cic.tsinghua.edu.cn/site/js/jquery-ui.js" charset="UTF-8"></script>
+	<script type="text/javascript" src="http://meta.cic.tsinghua.edu.cn/site/js/jquery.datepicker-zh-CN.js" charset="UTF-8"></script>
+	<script type="text/javascript" src="http://meta.cic.tsinghua.edu.cn/site/js/sdmenu.js" charset="UTF-8"></script>
+	<script type="text/javascript">
+		var metaPortalBaseUrl = 'http://meta.cic.tsinghua.edu.cn';
+	</script>
+
+	<!-- ��꾭���¼� ���������˵���ʾ -->
+	<script type="text/javascript" src="http://info.tsinghua.edu.cn:80/site/js/favorite_map.js"></script>
+
+
+	<script type="text/javascript" src="initial/switchtab.js"></script>
+	<script type="text/javascript" src="script/dload.js"></script>
+	<script type="text/javascript">
+		window.onload = function () {
+			var v = document.getElementById('userName');
+			if (v != null) {
+				v.focus();
+			}
+			switcher("oTabList", "oTabDiv");
+			switcher("oTab2List", "oTab2Div");
+			switcher("aTabList", "aTabDiv", "aTabDivMore");
+			switcher("bTabList", "bTabDiv", "bTabDivMore");
+			switcher("cTabList", "cTabDiv", "cTabDivMore");
+			loadFrameData("yjfk", "/minichan/all_yjfk.jsp");
+			return;
+		};
+
+		function findPosX(obj) {
+			var curleft = 0;
+			if (obj.offsetParent)
+				while (1) {
+					curleft += obj.offsetLeft;
+					if (!obj.offsetParent) break;
+					obj = obj.offsetParent;
+				}
+			else if (obj.x)
+				curleft += obj.x;
+			return curleft;
+		}
+
+		function findPosY(obj) {
+			var curtop = 0;
+			if (obj.offsetParent)
+				while (1) {
+					curtop += obj.offsetTop;
+					if (!obj.offsetParent) break;
+					obj = obj.offsetParent;
+				}
+			else if (obj.y)
+				curtop += obj.y;
+			return curtop;
+		}
+
+		function showyjfk() {
+			var img = document.getElementById('imgyjfk');
+			var obj = document.getElementById('yjfk');
+			if (obj.style) {
+				obj.style.left = (findPosX(img) - 0) + "px";
+				obj.style.top = (findPosY(img) + img.height - 0) + "px";
+				obj.style.display = 'block';
+			} else {
+				obj.left = (findPosX(img) - 0) + "px";
+				obj.top = (findPosY(img) + img.height - 0) + "px";
+				obj.display = '';
+			}
+			return false;
+		}
+
+		function hideyjfk() {
+			var obj = document.getElementById('yjfk');
+			if (obj.style) {
+				obj.style.display = 'none';
+			} else {
+				obj.display = 'none';
+			}
+			return false;
+		}
+
+		/* �������¼�  */
+		function submitSearch() {
+			var getp = $("#searchQuery").val();
+			if ("" == getp) {
+				$("#searchQuery").focus();
+				$("#searchQuery").attr("placeholder", "�����ʲ���Ϊ��...");
+				return;
+			}
+
+			var getpar = escape(getp);
+			window.open("http://166.111.6.39/web?query=" + getpar + "&ie=utf8");
+
+		}
+
+		function searchkeydown(event) {
+			if (event.keyCode == 13) {
+				submitSearch();
+			}
+		}
+		/* �������¼� end */
+	</script>
+</head>
+
+<body style="display:none">
+
+
+
+
+
+	<script type="text/javascript">
+		var htmlCache = null;
+
+
+		var jsonCache = null;
+
+		var config = {
+			mode: 0,
+			roamUrl: '',
+			userName: '',
+			htmlCache: htmlCache,
+			jsonCache: jsonCache,
+			systemName: ''
+		};
+	</script>
+	<script type="text/javascript">
+		metaportal.loadMetaPotal($.extend(config, {
+			forceFocusedId: "announcement"
+		}));
+	</script>
+	<table class="table_ban1">
+		<tr>
+			<td class="top">
+				<a href="http://www.tsinghua.edu.cn" target="_blank"><span class="font_white">�廪��ҳ</span></a>&nbsp;&nbsp;<span
+				 class="font_white">|</span>&nbsp;
+				<a href="http://news.tsinghua.edu.cn/" target="_blank"><span class="font_white">�廪����</span></a>&nbsp;&nbsp;<span
+				 class="font_white">|</span>&nbsp;
+				<a href="http://www.dangjian.tsinghua.edu.cn/" target="_blank"><span class="font_white">�廪����</span></a>&nbsp;&nbsp;
+				<!--<span class="font_white">|</span>&nbsp;
+    	<a href='http://m.tsinghua.edu.cn/' target="_blank"><span class="font_white">�ƶ��Ż�</span></a>&nbsp;&nbsp;<span class="font_white">|</span>&nbsp;
+    	<a href="http://portal.tsinghua.edu.cn/index.jsp?redirect=no" target="_blank"><span class="font_white">�������Ż�&nbsp;</span></a>
+    	<!--span class="font_white">|</span>&nbsp;
+    	<a href="/minichan/roamaction.jsp?id=2615" target="_blank"><span class="font_white">�����Ż�</span></a-->
+			</td>
+		</tr>
+		<tr>
+			<td class="bottom">
+				<a href="/index_t.jsp"><span class="font_white">�̹���</span></a>&nbsp;&nbsp;<span class="font_white">|</span>&nbsp;
+				<a href="/index_s.jsp"><span class="font_white">ѧ����</span></a>&nbsp;&nbsp;<span class="font_white">|</span>&nbsp;
+				<!--a href="/certs/certinstall.html"><span class="font_white">���ظ�֤��</span></a-->
+				<a href="http://jcfw.cic.tsinghua.edu.cn/mailbox/mailservlet?ID=portal" target="_blank"><span class="font_white"
+					 style="margin-right:4px">�������</span></a>
+			</td>
+		</tr>
+	</table>
+
+	<!--
+<!--
+<div class="nav">
+    <img src="initial/all/images/nav_bg.jpg" width="960" height="37" usemap="#Map" border="0" />
+    <map name="Map" id="Map">
+      <!--<AREA title="����������������������" href="http://bmxxfb.cic.tsinghua.edu.cn/dflz" shape=rect target=_blank coords="2,4,260,36">
+	  <AREA title="����ѧһ����ѧϰ����" href="http://wzpt.cic.tsinghua.edu.cn/publish/lxyz/index.html" shape=rect target=_blank coords="265,4,498,36">
+	  <AREA title="���ʽ�����"  href="http://goglobal.tsinghua.edu.cn/" shape="rect" target=_blank coords="503,4,685,36" >
+	  <area title="���ƽ�ѧ�������������"  href="http://bkjxpg.tsinghua.edu.cn/" shape="rect" target=_blank coords="690,4,959,36" >
+	 </map>
+</div>
+-->
+
+	<div class="nav">
+		<img src="initial/all/images/nav_bg20180921.jpg" width="960" height="37" usemap="#Map" border="0" />
+		<map name="Map" id="Map">
+			<AREA title="����������������������" href="http://bmxxfb.cic.tsinghua.edu.cn/dflz" shape=rect target=_blank coords="2,4,215,36">
+			<AREA title="���㵳��֯����������" href="http://jcdj.tsinghua.edu.cn/" shape=rect target=_blank coords="230,4,418,36">
+			<AREA title="����ѧһ����ѧϰ����" href="http://wzpt.cic.tsinghua.edu.cn/publish/lxyz/index.html" shape=rect target=_blank
+			 coords="423,4,615,36">
+			<AREA title="TsinghuaOA�û���ѵ" href="./OA.html" shape=rect target=_blank coords="640,4,759,36">
+			<AREA title="У���ط�����Ϣ����" href="http://xjgfwxx.tsinghua.edu.cn" shape=rect target=_blank coords="780,4,959,36">
+
+		</map>
+	</div>
+
+
+
+	<table class="table_nav">
+		<tr>
+			<td class="lpic"><a href="#" target="_blank"><img id="imgyjfk" src="initial/all/images/yjfk.gif" border="0"
+					 onmouseover="showyjfk();" onmouseout="hideyjfk();" /></a></td>
+
+
+			<td>
+				<table style="" align="right">
+					<tr>
+						<!-- padding-left:15px;padding-right:15px;  -->
+						<td><a style="padding-right:10px;" href="http://its.tsinghua.edu.cn/info/bzxt/1577" target="_blank"><span class="font">ʹ��˵��</span></a></td>
+
+						<form id="login-form" action='https://info.tsinghua.edu.cn:443/Login' method="post">
+							<input type="hidden" name="redirect" value="NO" />
+							<td class="username">�û����� </td>
+							<td class="srk"><input name="userName" id="userName" type="text" size="15" class="text" /></td>
+							<td class="username">��&nbsp;&nbsp;�룺</td>
+							<td class="srk"><input name="password" type="password" size="14" class="text" /></td>
+							<td class="but" style="width:140px;">
+								<input type="image" src="initial/all/images/t_09.gif" />&nbsp;
+								<a href="https://id.tsinghua.edu.cn/f/recovery/password/reset" target="_blank">��������</a>
+							</td>
+						</form>
+
+						<td class="srk">
+							<input id="searchQuery" name="searchQuery" type="text" size="18" class="text" onkeydown="searchkeydown(event);" />
+						</td>
+
+					</tr>
+				</table>
+
+			</td>
+			<td class="srk"><input type="image" src="initial/all/images/t_12.gif" onclick="submitSearch();" /></td>
+		</tr>
+	</table>
+
+
+
+	<div class="menu_yjfk" id="yjfk" style="position:absolute;left:18px;top:150px;z-index:999;background:#ffffff;display:none"
+	 onmouseover="showyjfk();" onmouseout="hideyjfk();">
+	</div>
+	<table class="table_main">
+		<tr>
+			<td class="ltd">
+				<table class="table_lxxk_c">
+					<tr>
+						<td>
+							<table class="table_wind_ctop">
+								<tr>
+									<td class="left">&nbsp;</td>
+									<td>
+										<div class="Tab_wind_ctop2" id="aTabList">
+											<ul>
+												<li class="on">�칫֪ͨ</li>
+												<li>�б�����</li>
+											</ul>
+										</div>
+									</td>
+									<td class="right">
+										<div id="aTabDivMore0">
+											<!-- <a href="http://oars.tsinghua.edu.cn/ztg/51029.nsf/infobytime?openview" target="_blank"><img src="initial/all/images/s_37.gif" border="0" /></a> -->
+											<a href='http://postinfo.tsinghua.edu.cn/f/bangongtongzhi/more' target="_blank"><img src="initial/all/images/s_37.gif"
+												 border="0" /></a>
+										</div>
+										<div id="aTabDivMore1" style="display:none;">
+											<a href='http://postinfo.tsinghua.edu.cn/f/zhaobiaoxinxi/more' target="_blank"><img src="initial/all/images/s_37.gif"
+												 border="0" /></a>
+										</div>
+									</td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+					<tr>
+						<td class="maintd">
+							<div id="aTabDiv0">
+								<!-- <iframe src="http://Info.tsinghua.edu.cn/notes/bgtz.html" name="aa" width="465"  height="145" scrolling="no" frameborder="0" id="aa"></iframe> -->
+								<iframe src='http://info.tsinghua.edu.cn/drupal/bgtz.html' name="aa" width="465" height="145" scrolling="no"
+								 frameborder="0" id="aa"></iframe>
+							</div>
+							<div id="aTabDiv1" style="display:none;">
+								<iframe src='http://info.tsinghua.edu.cn/drupal/zbxx.html' name="aa" width="465" height="145" scrolling="no"
+								 frameborder="0" id="aa"></iframe>
+							</div>
+						</td>
+					</tr>
+				</table>
+				<table class="table_lxxk_c">
+					<tr>
+						<td>
+							<table class="table_wind_ctop">
+								<tr>
+									<td class="left"></td>
+									<td>
+										<div class="Tab_wind_ctop">
+											<ul>
+												<li class="zygg"></li>
+												<li class="on">��Ҫ����</li>
+											</ul>
+										</div>
+									</td>
+									<td class="right">
+										<!-- <a href=" http://nwxxfb.syx.thcic.cn/f/zhongyaogonggao/more" target="_blank"> -->
+										<a href='http://postinfo.tsinghua.edu.cn/f/zhongyaogonggao/more' target="_blank">
+											<img src="initial/all/images/s_37.gif" border="0" /></a>
+									</td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+					<tr>
+						<td class="maintd">
+							<!-- <iframe name="aa" src="http://nwxxfb.syx.thcic.cn/f/zhongyaogonggao/mini" width="470" height="136" scrolling="no" frameborder="0"></iframe> -->
+							<iframe name="aa" src='http://info.tsinghua.edu.cn/drupal/zygg.html' width="470" height="136" scrolling="no"
+							 frameborder="0"></iframe>
+						</td>
+					</tr>
+				</table>
+				<table class="table_lxxk_c">
+					<tr>
+						<td>
+							<table class="table_wind_ctop">
+								<tr>
+									<td class="left"></td>
+									<td>
+										<div class="Tab_wind_ctop">
+											<ul>
+												<li class="jwgg"></li>
+												<li class="on">���񹫸�</li>
+												<li class="on"><a style="color:#005AB5;" href="http://academic.tsinghua.edu.cn/" target="_blank">��ѧ�Ż�</a></li>
+											</ul>
+										</div>
+									</td>
+									<td class="right"><a href='http://postinfo.tsinghua.edu.cn/f/jiaowugonggao/more' target="_blank"><img src="initial/all/images/s_37.gif"
+											 border="0" /></a></td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+					<tr>
+						<td class="maintd">
+							<iframe src='http://info.tsinghua.edu.cn/drupal/jwgg.html' name="aa" width="465" height="119" scrolling="no"
+							 frameborder="0" id="aa"></iframe>
+						</td>
+					</tr>
+				</table>
+
+
+				<table class="table_lxxk_c">
+					<tr>
+						<td>
+							<table class="table_wind_ctop">
+								<tr>
+									<td class="left"></td>
+									<td>
+										<div class="Tab_wind_ctop2" id="cTabList">
+											<ul>
+												<li class="on">����֪ͨ</li>
+												<li>֧����ͬ��ʾ</li>
+											</ul>
+										</div>
+									</td>
+									<!-- ���� -->
+									<td class="right">
+										<div id="cTabDivMore0">
+											<a href='http://postinfo.tsinghua.edu.cn/f/keyantongzhi/more' target="_blank"><img src="initial/all/images/s_37.gif"
+												 border="0" /></a>
+										</div>
+										<div id="cTabDivMore1" style="display:none;">
+											<a href='http://kyxxxt.cic.tsinghua.edu.cn/htgl.ht_zcxx_info.do?m=more' target="_blank"><img src="initial/all/images/s_37.gif"
+												 border="0" /></a>
+										</div>
+									</td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+					<tr>
+						<td class="maintd">
+							<!-- iframe -->
+							<div id="cTabDiv0">
+								<iframe src='http://info.tsinghua.edu.cn/drupal/kjtz.html' name="aa" width="465" height="119" scrolling="no"
+								 frameborder="0" id="aa"></iframe>
+							</div>
+							<div id="cTabDiv1" style="display:none;">
+								<iframe style="margin-left:-10px;" src='http://kyxxxt.cic.tsinghua.edu.cn/htgl.ht_zcxx_info.do?m=index' name="aa"
+								 width="465" height="119" scrolling="no" frameborder="0" id="aa"></iframe>
+							</div>
+						</td>
+					</tr>
+				</table>
+
+
+			</td>
+			<td class="rtd">
+				<table class="table_lxxk_c">
+					<tr>
+						<td class="maintd">
+							<!-- <iframe frameBorder=0 width="465" height=172 src="/minichan/roamaction.jsp?id=4244" scrolling="no"></iframe> -->
+							<iframe frameBorder=0 width="465" height=172 src="http://news.tsinghua.edu.cn/publish/thunews/thunews_info.html"
+							 scrolling="no"></iframe>
+						</td>
+					</tr>
+				</table>
+				<table class="table_lxxk_c">
+					<tr>
+						<td>
+							<table class="table_wind_ctop">
+								<tr>
+									<td class="left"></td>
+									<td>
+										<div class="Tab_wind_ctop">
+											<ul>
+												<li class="qiri"></li>
+												<li class="on">���������Ϣ����</li>
+											</ul>
+										</div>
+									</td>
+									<td class="right"><a href='http://postinfo.tsinghua.edu.cn/f/qirixinxihuizong/more' target="_blank"><img src="initial/all/images/s_37.gif"
+											 border="0" /></a></td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+					<tr>
+						<td class="maintd">
+							<iframe name=aa src='http://info.tsinghua.edu.cn/drupal/qrhz.html' frameborder=0 width="465" height="136"
+							 scrolling="no"></iframe>
+						</td>
+					</tr>
+				</table>
+				<table class="table_lxxk_c">
+					<tr>
+						<td>
+							<table class="table_wind_ctop">
+								<tr>
+									<td class="left"></td>
+									<td>
+										<div class="Tab_wind_ctop2" id="bTabList">
+											<ul>
+												<li class="on">ѧ���</li>
+												<li>���Ĵ��Ԥ��</li>
+											</ul>
+										</div>
+									</td>
+									<td class="right">
+										<div id="bTabDivMore0">
+											<a href='http://kyybgxx.cic.tsinghua.edu.cn/kybg/xsgg/' target="_blank"><img src="initial/all/images/s_37.gif"
+												 border="0" /></a>
+										</div>
+										<div id="bTabDivMore1" style="display:none;">
+											<a href='http://zhjw.cic.tsinghua.edu.cn/db.v_db_lwxxfbb_zy.do' target="_blank"><img src="initial/all/images/s_37.gif"
+												 border="0" /></a>
+										</div>
+									</td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+					<tr>
+						<td class="maintd">
+							<div id="bTabDiv0">
+								<iframe src='http://kyybgxx.cic.tsinghua.edu.cn/kybg/xsgg/portalpost.jsp' name="aa" width="465" height="119"
+								 scrolling="no" frameborder="0" id="aa"></iframe>
+							</div>
+							<div id="bTabDiv1" style="display:none;">
+								<iframe src='http://info.tsinghua.edu.cn/drupal/lwdbyg.html' name="aa" width="465" height="119" scrolling="no"
+								 frameborder="0" id="aa"></iframe>
+							</div>
+						</td>
+					</tr>
+				</table>
+				<table class="table_lxxk_c">
+					<tr>
+						<td>
+							<table class="table_wind_ctop">
+								<tr>
+									<td class="left"></td>
+									<td>
+										<div class="Tab_wind_ctop">
+											<ul>
+												<li class="hb"></li>
+												<li class="on">�� ��</li>
+											</ul>
+										</div>
+									</td>
+									<td class="right"><a href='http://postinfo.tsinghua.edu.cn/f/haibao/more' target="_blank"><img src="initial/all/images/s_37.gif"
+											 border="0" /></a></td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+					<tr>
+						<td class="maintd">
+							<iframe src='http://info.tsinghua.edu.cn/drupal/hb.html' name="aa" width="465" height="123" scrolling="no"
+							 frameborder="0" id="aa"></iframe>
+						</td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+
+		<tr>
+			<td class="ltd">
+				<table class="table_wind_bgfw">
+					<tr>
+						<td class="left">
+							<ul class="menu" id="oTabList">
+								<li class="on">ѧУ��Ϣ&nbsp;&nbsp;&nbsp;</li>
+								<li>�칫ָ��&nbsp;&nbsp;&nbsp;</li>
+								<li>�����ƶ�&nbsp;&nbsp;&nbsp;</li>
+							</ul>
+						</td>
+						<td class="tddata">
+							<div id="oTabDiv0">
+								<table class="table_wind_cconter">
+									<tr>
+										<td class="left2">&nbsp;</td>
+										<td><a href="http://xxbg.cic.tsinghua.edu.cn/oath/list.jsp?boardid=2701" target="_blank">ÿ�ն�̬��Ϣ</a></td>
+										<td class="left2">&nbsp;</td>
+										<td><a href="http://xxbg.cic.tsinghua.edu.cn/oath/list.jsp?boardid=2706" target="_blank">ѧУ����</a></td>
+										<td class="left2">&nbsp;</td>
+										<td><a href="http://xxbg.cic.tsinghua.edu.cn/oath/list.jsp?boardid=2710" target="_blank">У����鹫��</a></td>
+										<td class="left2">&nbsp;</td>
+										<td><a href="http://xxbg.cic.tsinghua.edu.cn/oath/list_cat.jsp?boardid=2711&amp;catorder=desc&amp;pageno=1"
+											 target="_blank">�廪����</a><a href="http://xxbg.cic.tsinghua.edu.cn/oath/list.jsp?boardid=2710" target="_blank"></a></td>
+									</tr>
+									<tr>
+										<td class="left2">&nbsp;</td>
+										<td><a href="http://xxbg.cic.tsinghua.edu.cn/oath/list.jsp?boardid=2704" target="_blank">ѧУ��</a></td>
+										<td class="left2">&nbsp;</td>
+										<td><a href="http://xxbg.cic.tsinghua.edu.cn/oath/list.jsp?boardid=2709" target="_blank">���췢��</a></td>
+										<td class="left2">&nbsp;</td>
+										<td><a href="http://postinfo.tsinghua.edu.cn/f/danweijianbao/more" target="_blank">����λ��</a></td>
+										<td class="left2">&nbsp;</td>
+										<td><a href="http://xxbg.cic.tsinghua.edu.cn/oath/list.jsp?boardid=22" target="_blank">ѧУͳ������</a></td>
+									</tr>
+									<tr>
+										<td class="left2">&nbsp;</td>
+										<td><a href="http://xxbg.cic.tsinghua.edu.cn/oath/list.jsp?boardid=3303" target="_blank">�ճ̰���</a></td>
+										<td class="left2">&nbsp;</td>
+										<td><a href="http://www.tsinghua.edu.cn/publish/newthu/newthu_cnt/intothu/intothu-3-6.html" target="_blank">��Ϣ�����걨</a></td>
+										<td class="left2">&nbsp;</td>
+										<td><a href="http://info.tsinghua.edu.cn/html/101zdts.htm" target="_blank">101ר��</a></td>
+									</tr>
+									<tr>
+										<td class="left2">&nbsp;</td>
+										<td colspan="7"><a href="http://xxbg.cic.tsinghua.edu.cn/oath/list.jsp?boardid=2705" target="_blank">У�쵼����ʱ������������Ϣ��ʾ</a></td>
+									</tr>
+									<tr>
+										<td class="left2">&nbsp;</td>
+										<td colspan="7"><a href="http://bmxxfb.cic.tsinghua.edu.cn/docinfo/board1/boardlist.jsp?columnId=012070401&parentColumnId=0120704&columnId=0120704"
+											 target="_blank">�������������Ŀ�ʽ��������</a></td>
+									</tr>
+								</table>
+							</div>
+							<div id="oTabDiv1" style="display:none;">
+								<table class="table_wind_cconter">
+									<tr>
+										<td class="left2">&nbsp;</td>
+										<td><a href="http://info.tsinghua.edu.cn/html/equipment/shebei.htm" target="_blank">ʵ�������ʲ�����</a></td>
+										<td class="left2">&nbsp;</td>
+										<td><a href="http://rsc.tsinghua.edu.cn/rscbg/rcjlzx.jsp?boardid=36&pageno=1" target="_blank">�˲Ž�������</a></td>
+										<td class="left2">&nbsp;</td>
+										<td><a href="http://gjcbg.cic.tsinghua.edu.cn/gjc/cgcj.jsp" target="_blank">����ָ��</a></td>
+									</tr>
+									<tr>
+										<td class="left2">&nbsp;</td>
+										<td><a target="_blank" href="/files/xjgfwsc.pdf">У���ط����ֲ�</a></td>
+										<td class="left2">&nbsp;</td>
+										<td><a href="http://www.tsinghua.edu.cn/publish/newthu/newthu_cnt/employ/employ-2.html" target="_blank">У����Ƹ</a></td>
+										<td class="left2">&nbsp;</td>
+										<td><a href="http://fdcglc.cic.tsinghua.edu.cn/" target="_blank">�ʲ�����</a></td>
+									</tr>
+									<tr>
+										<td class="left2">&nbsp;</td>
+										<td><a href="http://info.tsinghua.edu.cn/html/bszn/bscx.html" target="_blank">���³���</a></td>
+										<td class="left2">&nbsp;</td>
+										<td><a href="http://info.tsinghua.edu.cn/html/bszn/bgxz.html" target="_blank">�������</a></td>
+										<td class="left2">&nbsp;</td>
+										<td><a href="http://www.coace.tsinghua.edu.cn" target="_blank">���⽻������</a></td>
+									</tr>
+									<tr>
+										<td>&nbsp;</td>
+									</tr>
+									<tr>
+										<td>&nbsp;</td>
+									</tr>
+								</table>
+							</div>
+							<div id="oTabDiv2" style="display:none;">
+								<table class="table_wind_cconter">
+									<tr>
+										<td class="left2">&nbsp;</td>
+										<td><a href="http://xxbg.cic.tsinghua.edu.cn/gzzd/list.jsp?boardid=1&pageno=1&cat=1" target="_blank">ѧУ����</a></td>
+										<td class="left2">&nbsp;</td>
+										<td><a href="http://xxbg.cic.tsinghua.edu.cn/gzzd/list.jsp?boardid=1&pageno=1&cat=2" target="_blank">�������</a></td>
+										<td class="left2">&nbsp;</td>
+										<td><a href="http://xxbg.cic.tsinghua.edu.cn/gzzd/list.jsp?boardid=1&pageno=1&cat=3" target="_blank">ѧ��˼�̡�ѧ������</a></td>
+									</tr>
+									<tr>
+										<td class="left2">&nbsp;</td>
+										<td><a href="http://xxbg.cic.tsinghua.edu.cn/gzzd/list.jsp?boardid=1&pageno=1&cat=4" target="_blank">���пƼ�</a></td>
+										<td class="left2">&nbsp;</td>
+										<td><a href="http://xxbg.cic.tsinghua.edu.cn/gzzd/list.jsp?boardid=1&pageno=1&cat=5" target="_blank">��֯����</a></td>
+										<td class="left2">&nbsp;</td>
+										<td><a href="http://xxbg.cic.tsinghua.edu.cn/gzzd/list.jsp?boardid=1&pageno=1&cat=6" target="_blank">������</a></td>
+									</tr>
+									<tr>
+										<td class="left2">&nbsp;</td>
+										<td><a href="http://xxbg.cic.tsinghua.edu.cn/gzzd/list.jsp?boardid=1&pageno=1&cat=8" target="_blank">�����滮</a></td>
+										<td class="left2">&nbsp;</td>
+										<td><a href="http://xxbg.cic.tsinghua.edu.cn/gzzd/list.jsp?boardid=1&pageno=1&cat=7" target="_blank">�ʲ�����</a></td>
+										<td class="left2">&nbsp;</td>
+										<td><a href="http://xxbg.cic.tsinghua.edu.cn/gzzd/list.jsp?boardid=1&pageno=1&cat=9" target="_blank">���ʺ����뽻�����۰�̨����</a></td>
+									</tr>
+									<tr>
+										<td class="left2">&nbsp;</td>
+										<td><a href="http://xxbg.cic.tsinghua.edu.cn/gzzd/list.jsp?boardid=1&pageno=1&cat=10" target="_blank">������</a></td>
+										<td class="left2">&nbsp;</td>
+										<td><a href="http://xxbg.cic.tsinghua.edu.cn/gzzd/list.jsp?boardid=1&pageno=1&cat=11" target="_blank">����˼�빤��</a></td>
+										<td class="left2">&nbsp;</td>
+										<td><a href="http://xxbg.cic.tsinghua.edu.cn/gzzd/list.jsp?boardid=1&pageno=1&cat=12" target="_blank">���ܱ���</a></td>
+									</tr>
+									<tr>
+										<td class="left2">&nbsp;</td>
+										<td><a href="http://xxbg.cic.tsinghua.edu.cn/gzzd/list.jsp?boardid=1&pageno=1&cat=13" target="_blank">���ڹ���</a></td>
+										<td class="left2">&nbsp;</td>
+										<td><a href="http://xxbg.cic.tsinghua.edu.cn/gzzd/list.jsp?boardid=1&pageno=1&cat=14" target="_blank">������ѵ</a></td>
+										<td class="left2">&nbsp;</td>
+										<td><a href="http://xxbg.cic.tsinghua.edu.cn/gzzd/list.jsp?boardid=1&pageno=1&cat=15" target="_blank">�����ݹ���</a></td>
+									</tr>
+									<tr>
+										<td class="left2">&nbsp;</td>
+										<td><a href="http://xxbg.cic.tsinghua.edu.cn/gzzd/list.jsp?boardid=1&pageno=1&cat=16" target="_blank">��Ϣ����</a></td>
+										<td class="left2">&nbsp;</td>
+										<td><a href="http://xxbg.cic.tsinghua.edu.cn/gzzd/list.jsp?boardid=1&pageno=1&cat=18" target="_blank">��ҵ����</a></td>
+										<td class="left2">&nbsp;</td>
+										<td><a href="http://xxbg.cic.tsinghua.edu.cn/gzzd/list.jsp?boardid=1&pageno=1&cat=17" target="_blank">���ᡢ�����š����Ź���</a></td>
+									</tr>
+								</table>
+							</div>
+						</td>
+					</tr>
+				</table>
+			</td>
+			<td class="rtd">
+				<table class="table_wind_bgfw">
+					<tr>
+						<td class="left">
+							<ul class="menu" id="oTab2List">
+								<li class="on">����Ӧ��ϵͳ&nbsp;&nbsp;&nbsp;</li>
+								<li>������Ϣ����&nbsp;&nbsp;&nbsp;</li>
+								<li>������Ϣ����&nbsp;&nbsp;&nbsp;</li>
+							</ul>
+						</td>
+						<td class="tddata">
+							<div id="oTab2Div0">
+								<table class="table_wind_cconter_bmyy">
+									<tr>
+										<td class="left2">&nbsp;</td>
+										<td><a href="/postinfo/list.jsp" target="_blank">�칫�ʼ�</a></td>
+										<td class="left2">&nbsp;</td>
+										<td><a href="http://szyx.cic.tsinghua.edu.cn" target="_blank">ӭ��ϵͳ���</a></td>
+										<td class="left2">&nbsp;</td>
+										<td><a href="http://bylx.cic.tsinghua.edu.cn/index.jsp" target="_blank">��ҵ��У�������</a><a href="http://xxbg.cic.tsinghua.edu.cn/lbxxw/lbxx/login0.jsp"
+											 target="_blank"></a></td>
+									</tr>
+									<tr>
+										<!--     <td class="left2">&nbsp;</td>
+                <td><a href="http://mountain.tsinghua.edu.cn:7001" target="_blank">����������Դ</a><a href="http://yjsjzd.cic.tsinghua.edu.cn" target="_blank"></a></td>
+           -->
+										<td class="left2">&nbsp;</td>
+										<!--  <td><a href="http://166.111.14.6/ifs/index.jsp" target="_blank">ͳһ���д���</a></td>
+                <td class="left2">&nbsp;</td>
+              	<td><a href="http://166.111.14.81/mhwshk" target="_blank">���ϻ��</a></td>
+                <td class="left2">&nbsp;</td> -->
+										<td><a href="http://syskfgl.cic.tsinghua.edu.cn" target="_blank">ʵ���ҹ���</a></td>
+										<td class="left2">&nbsp;</td>
+										<td><a href="http://xxbg.cic.tsinghua.edu.cn/lbxxw/lbxx/login0.jsp" target="_blank">ÿ�ն�̬��Ϣά��</a></td>
+										<td class="left2">&nbsp;</td>
+										<td><a href="http://pt.tsinghua.edu.cn/" target="_blank">�����ۺϷ���ƽ̨</a><a href="http://xxbg.cic.tsinghua.edu.cn/lbxxw/lbxx/login0.jsp"
+											 target="_blank"></a></td>
+									</tr>
+									<tr>
+										<td>&nbsp;</td>
+										<td><a href="http://www.thsports.tsinghua.edu.cn/" target="_blank">��������Ԥ��</a></td>
+										<td>&nbsp;</td>
+										<td>&nbsp;</td>
+									</tr>
+								</table>
+							</div>
+							<div id="oTab2Div1" style="display:none;">
+								<table class="table_wind_cconter_bmyy">
+									<tr>
+										<td class="left3">&nbsp;</td>
+										<td><a href="http://xxbg.cic.tsinghua.edu.cn/wyh/wyh_all_detail.jsp" target="_blank">ѧУίԱ��</a></td>
+										<td class="left3">&nbsp;</td>
+										<td><a href="http://www.tsinghua.edu.cn/publish/xswyh/" target="_blank">ѧ��ίԱ��</a></td>
+										<td class="left3">&nbsp;</td>
+										<td><a href="http://jxxxfw.cic.tsinghua.edu.cn/search.do3?id=159" target="_blank">������רҵ</a></td>
+										<td class="left3">&nbsp;</td>
+										<td><a href="http://jxxxfw.cic.tsinghua.edu.cn/search.do3?id=82" target="_blank">�о���רҵ</a></td>
+									</tr>
+									<tr>
+										<td class="left3">&nbsp;</td>
+										<td><a href="http://xxbg.cic.tsinghua.edu.cn/lbxxw/dwbm/list_out.jsp" target="_blank">��λ����</a></td>
+										<td class="left3">&nbsp;</td>
+										<td><a href="http://zhxxfw.cic.tsinghua.edu.cn/cxtj.do3?id=22" target="_blank">��Ա��ѯ</a></td>
+										<td class="left3">&nbsp;</td>
+										<td><a href="http://85001.tsinghua.edu.cn" target="_blank">�绰��ѯ</a></td>
+										<td class="left3">&nbsp;</td>
+										<td><a href="http://166.111.222.179/" target="_blank">����ӡˢ</a></td>
+									</tr>
+									<tr>
+										<td class="left3">&nbsp;</td>
+										<td><a href="initial/all/images/map_2018_0428_info.jpg" target="_blank">У԰��ͼ</a></td>
+										<td class="left3">&nbsp;</td>
+										<td><a href="http://www.artmuseum.tsinghua.edu.cn" target="_blank">�廪չ��</a></td>
+										<td class="left3">&nbsp;</td>
+										<td><a href="http://xyybg.cic.tsinghua.edu.cn/qhxyy/board1/boardlist.jsp?boardid=12&bid2=67&pageno=1" target="_blank">��ҽָ��</a></td>
+										<td>&nbsp;</td>
+										<td>&nbsp;</td>
+									</tr>
+								</table>
+								<table class="table_wind_cconter_bmyy">
+									<tr>
+										<td class="left3">&nbsp;</td>
+										<td><a href="http://its.tsinghua.edu.cn/column/zbrj" target="_blank">У԰�������</a></td>
+										<!--      <td class="left3">&nbsp;</td>
+                  <td><a href="http://info.tsinghua.edu.cn/html/pdf20061027_1.htm" target="_blank">PDFת������</a></td> 
+                  <td class="left3">&nbsp;</td>
+                  <td><a href="http://info.tsinghua.edu.cn/html/SUN.htm" target="_blank">Sun��˾SAI��Ŀ</a></td>-->
+										<td class="left3">&nbsp;</td>
+										<td><a href="http://aqjy.tsinghua.edu.cn/" target="_blank">ʵ���Ұ�ȫ֪ʶ</a></td>
+										<td>&nbsp;</td>
+										<td>&nbsp;</td>
+									</tr>
+								</table>
+							</div>
+							<div id="oTab2Div2" style="display:none;">
+								<table class="table_wind_cconter">
+									<tr>
+										<td class="left2">&nbsp;</td>
+										<td><a href="http://its.tsinghua.edu.cn" target="_blank">��Ϣ���û�����</a></td>
+										<!--  <td class="left2">&nbsp;</td>
+                  <td><a href="https://id.tsinghua.edu.cn/hb/index.html" target="_blank">�̹��ϲ��ʺ�</a></td>-->
+
+										<td class="left2">&nbsp;</td>
+										<td><a href="/certs/certinstall.html" target="_blank">���ظ�֤��</a></td>
+									</tr>
+									<tr>
+										<td class="left2">&nbsp;</td>
+										<td><a href="https://usereg.tsinghua.edu.cn/" target="_blank">���Ѳ�ѯ</a></td>
+										<td class="left2">&nbsp;</td>
+										<td><a href="http://its.tsinghua.edu.cn/info/bzxt/1577" target="_blank">��Ϣ�Ż�����</a></td>
+										<td>&nbsp;</td>
+										<td>&nbsp;</td>
+									</tr>
+								</table>
+							</div>
+						</td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+	</table>
+	<table class="table_bot_pic">
+		<tr>
+			<!--
+    <td><a href="http://learn.tsinghua.edu.cn/" target="_blank"><img src="initial/all/images/all_08.gif" alt="����ѧ��" width="117" height="63" border="0" /></a></td>
+    <td><a href="/minichan/jxzy.html" target="_blank"><img src="initial/all/images/all_10.gif" alt="��ѧ��Դ" width="117" height="63" border="0" /></a></td>
+    <td><a href="http://kyybgxx.cic.tsinghua.edu.cn/kybg/index.jsp" target="_blank"><img src="initial/all/images/kyxx.jpg" alt="������Ϣ" width="117" height="63" border="0" /></a></td>
+    <td><a href="http://info.tsinghua.edu.cn/html/xxxczl/xczlxz.htm" target="_blank"><img src="initial/all/images/all_12.gif" alt="ѧУ������������" width="117" height="63" border="0" /></a></td>
+    <td><a href="http://info.tsinghua.edu.cn/html/lmntw/file/xiaoli.htm" target="_blank"><img src="initial/all/images/all_14.gif" alt="У��" width="117" height="63" border="0" /></a></td>
+    <td><a href="/minichan/bmxx.html" target="_blank"><img src="initial/all/images/all_16.gif" alt="������Ϣ" width="117" height="63" border="0" /></a></td>
+    <td><a href="http://www.tsinghua.edu.cn/publish/newthu/newthu_cnt/faculties/index.html" target="_blank"><img src="initial/all/images/all_18.gif" alt="Ժϵ��Ϣ" width="117" height="63" border="0" /></a></td>
+    <td><a href="/minichan/xnzd.html" target="_blank"><img src="initial/all/images/all_20.gif" alt="У��վ��" width="117" height="63" border="0" /></a></td>
+  	-->
+			<!--
+  	<td><a href="http://learn.tsinghua.edu.cn/" target="_blank"><img src="initial/all/images/all_08.gif" alt="����ѧ��" width="104" height="56" border="0" /></a></td>
+    <td><a href="http://lib.tsinghua.edu.cn/" target="_blank"><img src="initial/all/images/lib_index.gif" alt="ͼ���" width="104" height="56" border="0" /></a></td>
+    <td><a href="/minichan/jxzy.html" target="_blank"><img src="initial/all/images/all_10.gif" alt="��ѧ��Դ" width="104" height="56" border="0" /></a></td>
+    <td><a href="http://kyybgxx.cic.tsinghua.edu.cn/kybg/index.jsp" target="_blank"><img src="initial/all/images/kyxx.jpg" alt="������Ϣ" width="104" height="56" border="0" /></a></td>
+    <td><a href="http://info.tsinghua.edu.cn/html/xxxczl/xczlxz.htm" target="_blank" ><img height="56" border="0" width="104" alt="ѧУ������������" src="initial/all/images/all_12.gif"></a></td>
+    <td><a href="http://info.tsinghua.edu.cn/html/lmntw/file/xiaoli.htm" target="_blank"><img src="initial/all/images/all_14.gif" alt="У��" width="104" height="56" border="0" /></a></td>
+    <td><a href="/minichan/bmxx.html" target="_blank"><img src="initial/all/images/all_16.gif" alt="������Ϣ" width="104" height="56" border="0" /></a></td>
+    <td><a href="http://www.tsinghua.edu.cn/publish/newthu/newthu_cnt/faculties/index.html" target="_blank"><img src="initial/all/images/all_18.gif" alt="Ժϵ��Ϣ" width="104" height="56" border="0" /></a></td>
+    <td><a href="/minichan/xnzd.html" target="_blank"><img src="initial/all/images/all_20.gif" alt="У��վ��" width="104" height="56" border="0" /></a></td>
+  	-->
+			<td><a href="http://learn.tsinghua.edu.cn/" target="_blank"><img src="initial/all/images/all_08.gif" alt="����ѧ��"
+					 width="84" height="45" border="0" /></a></td>
+			<td><a href="http://lib.tsinghua.edu.cn/" target="_blank"><img src="initial/all/images/lib_index.gif" alt="ͼ���"
+					 width="84" height="45" border="0" /></a></td>
+			<td><a href="/minichan/jxzy.html" target="_blank"><img src="initial/all/images/all_10.gif" alt="��ѧ��Դ" width="84"
+					 height="45" border="0" /></a></td>
+			<td><a href="http://kyybgxx.cic.tsinghua.edu.cn/kybg/index.jsp" target="_blank"><img src="initial/all/images/kyxx.jpg"
+					 alt="������Ϣ" width="84" height="45" border="0" /></a></td>
+			<td><a href="http://info.tsinghua.edu.cn/html/xxxczl/xczlxz.htm" target="_blank"><img height="45" border="0" width="84"
+					 alt="ѧУ������������" src="initial/all/images/all_12.gif"></a></td>
+			<td><a href="http://info.tsinghua.edu.cn/html/lmntw/file/xiaoli.htm" target="_blank"><img src="initial/all/images/all_14.gif"
+					 alt="У��" width="84" height="45" border="0" /></a></td>
+			<td><a href="/minichan/bmxx.html" target="_blank"><img src="initial/all/images/all_16.gif" alt="������Ϣ" width="84"
+					 height="45" border="0" /></a></td>
+			<td><a href="http://www.tsinghua.edu.cn/publish/newthu/newthu_cnt/faculties/index.html" target="_blank"><img src="initial/all/images/all_18.gif"
+					 alt="Ժϵ��Ϣ" width="84" height="45" border="0" /></a></td>
+			<td><a href="/minichan/xnzd.html" target="_blank"><img src="initial/all/images/all_20.gif" alt="У��վ��" width="84"
+					 height="45" border="0" /></a></td>
+			<td><a href="http://www.hall.tsinghua.edu.cn/" target="_blank"><img src="initial/all/images/all_hall.gif" alt="���廪ѧ��"
+					 width="84" height="45" border="0" /></a></td>
+			<td><a href="http://www.xuetangx.com/" target="_blank"><img src="initial/all/images/all_xuetangx.jpg" alt="ѧ������"
+					 width="84" height="45" border="0" /></a></td>
+
+		</tr>
+	</table>
+	<table class="table_bottom">
+		<tr>
+			<td>
+				<img src="http://jcfw.cic.tsinghua.edu.cn:80/counter/counterservlet?ID=INFO" alt="���ʼ�����" border="0" /><br />����֧�֣�<a
+				 href="http://info.itc.tsinghua.edu.cn/" target="_blank">�廪��ѧ��Ϣ����������</a>&nbsp;&nbsp;&nbsp;&nbsp;<br />����ƽ̨��<a
+				 href="http://its.tsinghua.edu.cn" target="_blank">http://its.tsinghua.edu.cn/</a>&nbsp;&nbsp;&nbsp;&nbsp;�������䣺<a
+				 href="mailto:its@tsinghua.edu.cn" target="_blank">its@tsinghua.edu.cn</a>&nbsp;&nbsp;&nbsp;&nbsp;�������ߣ�62784859/62771940
+			</td>
+		</tr>
+	</table>
+
+	<iframe src="http://zhjw.cic.tsinghua.edu.cn/servlet/InvalidateSession" width="0" height="0" marginwidth="0"
+	 marginheight="0" frameborder="no"></iframe>
+	<iframe src="http://citrix.cic.tsinghua.edu.cn:8088/Citrix/AccessPlatform/logout.aspx" width="0" height="0"
+	 marginwidth="0" marginheight="0" frameborder="no"></iframe>
+	<iframe src="http://zhjw.cic.tsinghua.edu.cn/jxpg/f/js/main" width="0" height="0" marginwidth="0" marginheight="0"
+	 frameborder="no"></iframe>
+
+</body>
+
+</html>

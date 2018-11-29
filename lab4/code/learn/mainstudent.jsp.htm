@@ -1,0 +1,164 @@
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/css/big_cn.css" rel="stylesheet" type="text/css" />
+
+  
+<html>
+<head>
+<title>网络学堂</title>
+<SCRIPT LANGUAGE="JavaScript">
+<!--
+function centerWindow() {
+if (document.all)
+var xMax = screen.width, yMax = screen.height;
+else
+if (document.layers)
+var xMax = window.outerWidth, yMax = window.outerHeight;
+else
+var xMax = 640, yMax=480;
+var xOffset = (xMax - 200)/2, yOffset = (yMax - 200)/2;
+
+window.open('/cys.htm','myExample7', 'width=1024,height=768,screenX='+xOffset+',screenY='+yOffset+', top='+yOffset+',left='+xOffset+'');
+}
+
+//centerWindow();
+//-->
+</SCRIPT>
+</head>
+<body>
+
+<!--Banner区域开始-->
+<table cellpadding="0" cellspacing="0" id="banner">
+  <tr>
+    <td id="banner_logo">&nbsp;</td>
+    <td id="banner_bg">&nbsp;</td>
+    <td valign="baseline" id="banner_pic">
+	    <!--顶部菜单开始-->
+	    <div style="float:right;">
+		    <table cellpadding="0" cellspacing="0">
+		    	<tr>
+		        	<td class="en">
+		        		
+					    	&nbsp;<a href="/MultiLanguage/lesson/student/mainstudent.jsp?language=en"><b>English</b></a>
+					    	
+		        	</td>
+		        </tr>
+		    	<tr>
+		        	<td>
+			            <table id="top_menu" cellspacing="0">
+			              <tr>
+			                <td class="left"><img src="/img/spacer.gif" /></td>
+			                <td> <a href="http://learn.cic.tsinghua.edu.cn/f/common/forum/freedomForum" target="_blank">使用反馈区</a></td>
+			                 <td class="line"><img src="/img/menu_line.gif" /></td>
+			                
+			                <td class="common2">
+			                	
+			                	    <a href="/MultiLanguage/lesson/student/mainstudent.jsp?css=S">小字体版</a>
+			                	
+			                </td>
+			                <td class="line"><img src="/img/menu_line.gif" /></td>
+			                
+			                <td class="common2"><a target="_blank" href="/MultiLanguage/lesson/teacher/msg_look_index.jsp">学堂公告</a></td>
+			                <td class="line"><img src="/img/menu_line.gif" /></td>
+			                <td class="common"><a href="/MultiLanguage/lesson/logout.jsp">退出系统</a></td>
+			                <td class="right"><img src="/img/spacer.gif" /></td>
+			              </tr>
+			            </table>
+			    	</td>
+		        </tr>
+		    </table>
+		</div>    
+	    <!--顶部菜单结束-->
+    </td>
+  </tr>
+</table>
+<!--Banner区域结束-->
+
+<!--中间区域开始-->
+<table cellpadding="0" cellspacing="0" id="box">
+  <tr>
+    <td width="180" id="left_top">&nbsp;</td>
+    <td width="50" id="center_top"><div class="pic"></div></td>
+    <td width="1009" id="right_top">&nbsp;</td>
+  </tr>
+  <tr>
+    <!--左侧菜单区域开始-->
+    <td rowspan="2" id="left_center">
+    	<div id="left_title"></div>
+        <table cellpadding="0" cellspacing="0" id="left_menu">
+        	  <tr>
+            	<td class="menu_common"><a target="content_frame" href="MyCourse.jsp?language=cn">我的课程</a></td>
+            </tr>
+            
+            <tr>
+            	<td class="menu_common"><a target="content_frame" href="/MultiLanguage/vspace/vspace_userinfo1.jsp">个人信息</a></td>
+            </tr>
+            <tr>
+            	<td class="menu_common"><a target="content_frame" href="/MultiLanguage/vspace/homepage_new.jsp">个人主页</a></td>
+            </tr>
+            <tr>
+            	<td class="menu_common"><a target="content_frame" href="/MultiLanguage/vspace/vspace_note.jsp">我的笔记本</a></td>
+            </tr>
+            <tr>
+            	<td class="menu_common"><a target="_blank" href="/vspace.jsp">虚拟空间</a></td>
+            </tr>
+            <tr>
+            	<td class="menu_common"><a target="content_frame" href="/defSet.jsp">默认设置</a></td>
+            </tr>
+            
+        </table>
+       <buttton class="rain" style="font-size:14px;padding-bottom: 2px; "onclick="window.open('http://zhjw.cic.tsinghua.edu.cn/jxmhkfjl.jxmh_kfjlsjxs.do')"> 开放交流时间表 <img src="/images/hot.gif"></buttton>  
+      <buttton class="rain" style="font-size:14px;padding-bottom: 3px; "onclick="window.open('http://kywjdc.cic.tsinghua.edu.cn/limesurvey/r.php?sid=619972')">网络学堂调查问卷 <img src="/images/new.gif"></buttton>
+         <img style="padding-top:20px;width: 108px; padding-left: 24px;" src="/img/weima.jpg">
+         <buttton class="rain" onclick="window.open('http://rain.xuetangx.com/')"><img src="/images/rainlogo.png"> 雨课堂  (推荐) </buttton>
+    </td>
+    <!--左侧菜单区域结束-->
+    <td id="center_yh">&nbsp;</td>
+    <!--右侧内容区域结束-->
+    <td rowspan="2" id="right_center" width="100%" height="100%">
+    	<!--iFrame自适应宽度和高度！ -->
+    	<div style='-webkit-overflow-scrolling:touch; overflow: auto;'>
+    		<iframe id="content_frame" name="content_frame" height="600px" width="100%" onload="this.height=content_frame.document.body.scrollHeight"  marginwidth=0 marginheight=0 scrolling="no" src="MyCourse.jsp?language=cn" frameborder=0 ></iframe>
+  		</div>
+    </td>
+    <!--右侧内容区域结束-->
+  </tr>
+  <tr>
+    <td id="center_bg">&nbsp;</td>
+  </tr>
+  <tr>
+    <td id="left_bottom">&nbsp;</td>
+    <td id="center_bottom">&nbsp;</td>
+    <td id="right_bottom">&nbsp;</td>
+  </tr>
+</table><!--中部区域结束-->
+
+<!--Footer区域开始-->
+<!--Footer区域开始-->
+<table id="footer" cellpadding="0" cellspacing="0">
+	<tr>
+    	<td id="footer_left"></td>
+      <td id="footer_line"><img src="/img/footer_line.jpg" /></td>
+        <td id="footer_right">
+        	<a href="mailto:wlxt@tsinghua.edu.cn">联系我们</a>&nbsp; |&nbsp;         	
+        	
+        	  <a href="/public/help1/index.htm"> 
+        	
+        		帮助中心
+        		</a><br />
+            版权所有 &copy; 清华大学注册中心 清华大学计算机与信息管理中心
+       </td>
+    </tr>
+</table>
+</body>
+</html>

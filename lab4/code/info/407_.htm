@@ -1,0 +1,812 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+
+<head>
+	<meta content="IE=edge" http-equiv="X-UA-Compatible">
+	<title>清华大学信息门户</title>
+	<link href="/style/css/common.css" rel="stylesheet" type="text/css">
+	<link href="/style/css/menu.css" rel="stylesheet" type="text/css">
+	<link href="/style/css/page.css" rel="stylesheet" type="text/css">
+	<link href="/style/css/style.css" rel="stylesheet" type="text/css">
+	<style type="text/css">
+		#wt2feedback a img {
+			margin-top: 15px;
+		}
+
+		#wt2service a img {
+			margin-top: 15px;
+		}
+
+		#wt2st a img {
+			margin-top: 15px;
+		}
+
+		.wt2two a img {
+			margin-top: 15px;
+		}
+
+		#wt2userservice a img {
+			margin-top: 14px;
+		}
+	</style>
+	<script src="script/jquery-1.7.2.min.js" type="text/javascript"></script>
+	<script src="script/global.js" type="text/javascript"></script>
+	<script src="script/qhtab.js" type="text/javascript"></script>
+	<script src="script/login.js" type="text/javascript"></script>
+	<script src="script/session.js" type="text/javascript"></script>
+	<script charset="UTF-8" src="http://meta.cic.tsinghua.edu.cn/script/meta.js" type="text/javascript"></script>
+	<script charset="UTF-8" src="http://meta.cic.tsinghua.edu.cn/script/json2.js" type="text/javascript"></script>
+	<script src="site/js/favorite_map.js" type="text/javascript"></script>
+	<script charset="UTF-8" src="http://meta.cic.tsinghua.edu.cn/site/js/jquery-ui.js" type="text/javascript"></script>
+	<script charset="UTF-8" src="http://meta.cic.tsinghua.edu.cn/site/js/jquery.datepicker-zh-CN.js" type="text/javascript"></script>
+	<script charset="UTF-8" src="http://meta.cic.tsinghua.edu.cn/site/js/sdmenu.js" type="text/javascript"></script>
+</head>
+
+<body marginheight="0" marginwidth="0" topmargin="0" leftmargin="0" text="#000000" bgcolor="#FFFFFF" style="display:none">
+	<div id="header"></div>
+	<script type="text/javascript">
+		var iscancel = 'no';
+
+		window.onload = function () {};
+
+		var checkurl = '/annualreviewServlet?t=' + new Date().getTime();
+		$.ajax({
+			"type": 'get',
+			"dataType": "json",
+			"url": checkurl,
+			"success": function (resp) {
+				var ispass = resp.ispass;
+				var work = resp.work;
+				var changePasswordAfter = resp.changePasswordAfter;
+				var isstart = resp.isstart;
+
+				if (work == "ok") {
+					if (isstart == "yes") {
+						if (ispass == "no") {
+							if (!changePasswordAfter) {
+								if (iscancel == "no") {
+									window.location.href = "/annualreview.jsp";
+								}
+							}
+						} else {
+							if (!changePasswordAfter) {
+								window.location.href = "/annualreviewfinal.jsp";
+							}
+
+						}
+					}
+				} else {
+					alert("时间格式错误，请修改后重试！");
+				}
+
+			}
+		});
+
+
+
+		var metaPortalBaseUrl = 'http://meta.cic.tsinghua.edu.cn';
+		var htmlCache = null,
+			jsonCache = null;
+
+		$(function () {
+			metaportal.loadMetaPotal({
+				mode: 1,
+				roamUrl: '',
+				userName: '',
+				htmlCache: htmlCache,
+				jsonCache: jsonCache,
+				systemName: '信息门户'
+			});
+		});
+	</script>
+	<div id="wrapper">
+		<div id="content">
+			<table class="frame_tab" cellpadding="0" cellspacing="0">
+				<tr>
+					<td width="18%" class="column">
+						<div id="9-740_table" class="tab_02 clearfix">
+							<div class="sidebar">
+								<h2><span class="left"><img height="40" width="69" src="style/images/l_menu_title_left.gif"></span><span class="right"><img
+										 height="40" width="68" src="style/images/l_menu_title_right.gif"></span></h2>
+								<ul id="menu">
+									<li>
+										<h3 class="menu_arrow"><span>学习</span></h3><a target="_blank" class="left" href="http://zhjw.cic.tsinghua.edu.cn/portal3rd.do?url=/portal3rd.do&amp;m=bks_yjkbSearch">课表</a><a
+										 target="_blank" class="left" href="/minichan/roamaction.jsp?id=105">网络学堂</a><a target="_blank" class="left"
+										 href="http://zhjw.cic.tsinghua.edu.cn/jxmh.do?m=bks_ksSearch">考试安排</a><a target="_blank" class="left" href="http://zhjw.cic.tsinghua.edu.cn/jxmhslj.v_xs_zpb.do?cm=getXsSljInfo">四六级准考证</a><a
+										 target="_blank" class="left" href="http://zhjw.cic.tsinghua.edu.cn/xkBks.vxkBksJxjhBs.do?m=kkxxSearch&amp;pathContent=开课信息查询&amp;from=jxmh">开课信息</a><a
+										 target="_blank" class="left" href="/minichan/roamaction.jsp?id=460">二学位辅修申请</a>
+										<div class="clear"></div><a target="_blank" class="left" href="http://zhjw.cic.tsinghua.edu.cn/s_srt.v_srt_xslx_dqxx.do?cm=help">SRT</a><a
+										 target="_blank" class="left" href="/minichan/roamaction.jsp?id=112">教学评估</a><a target="_blank" class="left"
+										 href="http://zhjw.cic.tsinghua.edu.cn/jxpgcicmain.do?m=index">教学建议</a>
+										<div class="clear"></div><a target="_blank" class="left" href="http://zhjw.cic.tsinghua.edu.cn/cj.cjCjbAll.do?m=bks_yxkccj">全部成绩</a><a
+										 target="_blank" class="left" href="http://zhjw.cic.tsinghua.edu.cn/portal3rd.do?url=/portal3rd.do&amp;m=bks_jzdqb_student">奖助贷勤补</a>
+										<div class="clear"></div><a target="_blank" class="left" href="http://zhjw.cic.tsinghua.edu.cn/kcgl.whsz_xxfbb.do?m=xsXxfbListIndex">文化素质课</a><a
+										 target="_blank" class="left" href="http://zhjw.cic.tsinghua.edu.cn/gjpy.v_gjpy_jwyxxfsqb.do?m=xsxfsq">境外短期研修信息</a>
+										<div class="clear"></div><a target="_blank" class="left" href="/minichan/roamaction.jsp?id=149">本科交换生项目</a><a
+										 target="_blank" class="left" href="/minichan/roamaction.jsp?id=439">其他海外学习项目</a>
+										<div class="clear"></div>
+										<div class="dropdown_4columns">
+											<div class="col_1">
+												<ul>
+													<p><a target="_blank" href="/minichan/roamaction.jsp?id=104">公告</a></p>
+												</ul>
+											</div>
+											<p class="m_line"></p>
+											<div class="col_1">
+												<div class="con_1_txt">
+													<dl><dt><a target="_blank" href="/minichan/roamaction.jsp?id=105">网络学堂</a><dt><a target="_blank" href="http://zhjw.cic.tsinghua.edu.cn/portal3rd.do?url=/portal3rd.do&amp;m=bks_yjkbSearch">课表</a><dt><a
+															 target="_blank" href="http://zhjw.cic.tsinghua.edu.cn/jxmh.do?m=bks_ksSearch">考试安排</a><dt><a target="_blank"
+															 href="http://zhjw.cic.tsinghua.edu.cn/jxmhslj.v_xs_zpb.do?cm=getXsSljInfo">四六级准考证</a><dt><a target="_blank"
+															 href="http://zhjw.cic.tsinghua.edu.cn/xkBks.vxkBksJxjhBs.do?m=kkxxSearch&amp;pathContent=开课信息查询&amp;from=jxmh">开课信息</a><dt><a
+															 target="_blank" href="http://zhjw.cic.tsinghua.edu.cn/jxmhkfjl.jxmh_kfjlsjxs.do">开放交流时间</a><dt><a
+															 target="_blank" href="/minichan/roamaction.jsp?id=460">二学位辅修申请</a><dt><a target="_blank" href="/minichan/roamaction.jsp?id=442">转专业申请</a><dt><a
+															 target="_blank" href="/minichan/roamaction.jsp?id=486">大类专业确认</a></dl>
+												</div>
+											</div>
+											<p class="m_line"></p>
+											<div class="col_1">
+												<h5><span class="a_t">成绩</span></h5>
+												<div class="con_1_txt">
+													<dl><dt><a target="_blank" href="http://zhjw.cic.tsinghua.edu.cn/cj.cjCjbAll.do?m=bks_yxkccj">全部成绩</a><dt><a
+															 target="_blank" href="http://zhjw.cic.tsinghua.edu.cn/cj.cjCjbAll.do?m=bks_cjdcx&amp;cjdlx=zw">中文成绩单</a><dt><a
+															 target="_blank" href="http://zhjw.cic.tsinghua.edu.cn/cj.cjCjbAll.do?m=bks_cjdcx&amp;cjdlx=yw">英文成绩单</a></dl>
+												</div>
+											</div>
+											<p class="m_line"></p>
+											<div class="col_1">
+												<h5><span class="a_t">教学评估</span></h5>
+												<div class="con_1_txt">
+													<dl><dt><a target="_blank" href="/minichan/roamaction.jsp?id=112">教学评估</a><dt><a target="_blank" href="http://zhjw.cic.tsinghua.edu.cn/jxpgcicmain.do?m=index">教学建议</a><dt><a
+															 target="_blank" href="http://zhjw.cic.tsinghua.edu.cn/wjdc.dcrwb.do?m=index">毕业生调查问卷</a></dl>
+												</div>
+											</div>
+											<p class="m_line"></p>
+											<div class="col_1">
+												<h5><span class="a_t">培养信息</span></h5>
+												<div class="con_1_txt">
+													<dl><dt><a target="_blank" href="http://zhjw.cic.tsinghua.edu.cn/jhBks.vjhBksPyfabBs.do?m=grPyfabks&amp;theRole=&amp;theModule=pyfa&amp;pathContent=个人培养方案">培养方案及计划</a><dt><a
+															 target="_blank" href="http://zhjw.cic.tsinghua.edu.cn/jhBks.by_fascjgmxb_gr.do?m=queryFaScjgmx_gr&amp;xsViewFlag=pyfa&amp;pathContent=培养方案完成情况">培养方案完成情况</a><dt><a
+															 target="_blank" href="http://zhjw.cic.tsinghua.edu.cn/jhBks.by_fascjgmxb_gr.do?m=queryJxjhScjgmx_gr&amp;xsViewFlag=jxjh&amp;pathContent=教学计划完成情况">教学计划完成情况</a><dt><a
+															 target="_blank" href="/minichan/roamaction.jsp?id=468">研究生管理规定自测</a></dl>
+												</div>
+											</div>
+											<p class="m_line"></p>
+											<div class="col_1">
+												<ul>
+													<p><a target="_blank" href="http://zhjw.cic.tsinghua.edu.cn/s_srt.v_srt_xslx_dqxx.do?cm=help">SRT</a></p>
+												</ul>
+											</div>
+											<p class="m_line"></p>
+											<div class="col_1">
+												<h5><a target="_blank" class="a_t" href="/minichan/roamaction.jsp?id=125">文化素质课</a></h5>
+												<div class="con_1_txt">
+													<dl><dt><a target="_blank" href="http://zhjw.cic.tsinghua.edu.cn/kcgl.v_jzxxb.do?m=ytjzXxIndex">已听讲座</a><dt><a
+															 target="_blank" href="http://zhjw.cic.tsinghua.edu.cn/kcgl.whsz_xfsqb.do?m=xfsqInit">学分申请</a><dt><a
+															 target="_blank" href="http://zhjw.cic.tsinghua.edu.cn/kcgl.whsz_xfsqb.do?m=xfsqIndex">申请查询</a><dt><a
+															 target="_blank" href="http://zhjw.cic.tsinghua.edu.cn/kcgl.v_xsjz_jzxx.do?m=xsLwtjIndex">论文提交</a><dt><a
+															 target="_blank" href="http://zhjw.cic.tsinghua.edu.cn/kcgl.whsz_xslwb.do?m=xsYschLwIndex">论文查询</a></dl>
+												</div>
+											</div>
+											<p class="m_line"></p>
+											<div class="col_1">
+												<h5><a target="_blank" class="a_t" href="/minichan/roamaction.jsp?id=131">奖助贷勤补</a></h5>
+												<div class="con_1_txt">
+													<dl><dt><a target="_blank" href="http://zhjw.cic.tsinghua.edu.cn/bksjzd/student/jxj/menu.jsp">奖学金</a><dt><a
+															 target="_blank" href="http://zhjw.cic.tsinghua.edu.cn/bksjzd/student/zxj/menu.jsp">助学金</a><dt><a target="_blank"
+															 href="http://zhjw.cic.tsinghua.edu.cn/bksjzd/student/dxj/welcome.jsp">贷学金</a><dt><a target="_blank"
+															 href="http://zhjw.cic.tsinghua.edu.cn/bksjzd/student/jzxj/menu.jsp">奖助学金</a><dt><a target="_blank" href="http://zhjw.cic.tsinghua.edu.cn/bksjzd/student/qgzx/menu.jsp">勤工助学</a></dl>
+												</div>
+												<div class="con_1_txt">
+													<dl><dt><a target="_blank" href="http://zhjw.cic.tsinghua.edu.cn/bksjzd/student/knbz/menu.jsp">困难补助</a><dt><a
+															 target="_blank" href="http://zhjw.cic.tsinghua.edu.cn/bksjzd/student/zhcp/menu.jsp">奖励处分</a></dl>
+												</div>
+												<div class="con_1_txt">
+													<dl><dt><a target="_blank" href="/minichan/roamaction.jsp?id=438">个人信息</a></dl>
+												</div>
+												<div class="con_1_txt">
+													<dl><dt><a target="_blank" href="/minichan/roamaction.jsp?id=456">学生测评</a></dl>
+												</div>
+											</div>
+											<p class="m_line"></p>
+											<div class="col_1">
+												<h5><span class="a_t">教室资源</span></h5>
+												<div class="con_1_txt">
+													<dl><dt><a target="_blank" href="http://announce.cic.tsinghua.edu.cn/bslc/jssxg?field_fenlei_jssxg_tid=148">教室平面图</a><dt><a
+															 target="_blank" href="http://zhjw.cic.tsinghua.edu.cn/pk.classroomctrl.do?m=roomStatusQYIndex&amp;showtitle=0">教室状况查看</a></dl>
+												</div>
+											</div>
+											<p class="m_line"></p>
+											<div class="col_1">
+												<ul>
+													<p><a target="_blank" href="/minichan/roamaction.jsp?id=143">安全知识考核</a></p>
+												</ul>
+											</div>
+											<p class="m_line"></p>
+											<div class="col_1">
+												<h5><a target="_blank" class="a_t" href="/minichan/roamaction.jsp?id=144">出国出境情况</a></h5>
+												<div class="con_1_txt">
+													<dl><dt><a target="_blank" href="http://zhjw.cic.tsinghua.edu.cn/gjpy.v_gjpy_jwyxxfsqb.do?m=xsxfsq">境外短期研修信息</a><dt><a
+															 target="_blank" href="/minichan/roamaction.jsp?id=149">本科交换生项目</a><dt><a target="_blank" href="/minichan/roamaction.jsp?id=439">其他海外学习项目</a></dl>
+												</div>
+												<div class="con_1_txt">
+													<dl><dt><a target="_blank" href="/minichan/roamaction.jsp?id=430">因公出国(境)申报系统(新)</a></dl>
+												</div>
+												<div class="con_1_txt">
+													<dl><dt><a target="_blank" href="/minichan/roamaction.jsp?id=147">短期因公出国(境)(2013-2015年度查询)</a></dl>
+												</div>
+											</div>
+											<p class="m_line"></p>
+											<div class="col_1">
+												<h5><span class="a_t">体育课信息</span></h5>
+												<ul>
+													<p><a target="_blank" href="http://zhjw.cic.tsinghua.edu.cn/jxmh.do?url=jxmh.do&amp;m=bks_tyjx_tcyy">体质测试</a></p>
+												</ul>
+											</div>
+										</div>
+									<li>
+										<h3 class="menu_arrow"><span>科研</span></h3><a target="_blank" class="left" href="http://kyxxxt.cic.tsinghua.edu.cn/htgl.ht_jbxx.do?s_sfjt=0&amp;s_zt=4">项目管理</a><a
+										 target="_blank" class="left" href="/minichan/roamaction.jsp?id=151">学术活动订阅</a>
+										<div class="clear"></div><a target="_blank" class="left" href="/minichan/roamaction.jsp?id=422">仪器共享服务平台</a>
+										<div class="clear"></div>
+										<div class="dropdown_4columns">
+											<div class="col_1">
+												<ul>
+													<p><a target="_blank" href="/minichan/roamaction.jsp?id=151">学术活动订阅</a></p>
+												</ul>
+											</div>
+											<div class="col_1">
+												<div class="con_1_txt">
+													<dl><dt><a target="_blank" href="http://kyxxxt.cic.tsinghua.edu.cn/htgl.ht_jbxx.do?s_sfjt=0&amp;s_zt=4">项目管理</a><dt><a
+															 target="_blank" href="http://kyxxxt.cic.tsinghua.edu.cn/lw.v_lwinfo.do?m=search">论文管理</a></dl>
+												</div>
+											</div>
+											<div class="col_1">
+												<div class="con_1_txt">
+													<dl><dt><a target="_blank" href="http://kyxxxt.cic.tsinghua.edu.cn/import2db.kjcg.do">成果管理</a><dt><a
+															 target="_blank" href="http://kyxxxt.cic.tsinghua.edu.cn/hjzl.hj_jbqk.do">奖励管理</a></dl>
+												</div>
+											</div>
+											<div class="col_1">
+												<div class="con_1_txt">
+													<dl><dt><a target="_blank" href="http://kyxxxt.cic.tsinghua.edu.cn/hjzl.zl_jbqk.do?p_type=zl
+">专利管理</a><dt><a
+															 target="_blank" href="http://kyxxxt.cic.tsinghua.edu.cn/zz.cg_zzxxb.do">著作管理</a></dl>
+												</div>
+												<div class="con_1_txt">
+													<dl><dt><a target="_blank" href="http://kyxxxt.cic.tsinghua.edu.cn/hjzl.zl_jbqk.do?p_type=rj">软著查询</a><dt><a
+															 target="_blank" href="http://kyxxxt.cic.tsinghua.edu.cn/hjzl.zl_jbqk.do?m=add&amp;p_type=rj">软著申请</a></dl>
+												</div>
+											</div>
+											<div class="col_1">
+												<div class="con_1_txt">
+													<dl><dt><a target="_blank" href="http://kyxxxt.cic.tsinghua.edu.cn/organ/gotoSearch.jspx?organState=DRAFT,TJDS,YXSHTG,YXSHBTG,KYYSHTG,KYYSHBTG&amp;leiBie=0">机构管理</a></dl>
+												</div>
+											</div>
+											<div class="col_1">
+												<div class="con_1_txt">
+													<dl><dt><a target="_blank" href="/minichan/roamaction.jsp?id=364">保密知识教育考试</a></dl>
+												</div>
+											</div>
+											<div class="col_1">
+												<div class="con_1_txt">
+													<dl><dt><a target="_blank" href="/minichan/roamaction.jsp?id=422">仪器共享服务平台</a></dl>
+												</div>
+											</div>
+										</div>
+									<li>
+										<h3 class="menu_arrow"><span>财务</span></h3><a target="_blank" class="left" href="/minichan/roamaction.jsp?id=452">自助报账(新)</a><a
+										 target="_blank" class="left" href="/minichan/roamaction.jsp?id=467">网上交费</a>
+										<div class="clear"></div><a target="_blank" class="left" href="/minichan/roamaction.jsp?id=158">助学金查询</a><a
+										 target="_blank" class="left" href="/minichan/roamaction.jsp?id=156">银行代发查询</a>
+										<div class="clear"></div><a target="_blank" class="left" href="/minichan/roamaction.jsp?id=159">IC卡交易查询与挂失</a>
+										<div class="clear"></div>
+										<div class="dropdown_4columns">
+											<div class="col_1">
+												<div class="con_1_txt">
+													<dl><dt><a target="_blank" href="/minichan/roamaction.jsp?id=452">自助报账(新)</a><dt><a target="_blank" href="/minichan/roamaction.jsp?id=467">网上交费</a><dt><a
+															 target="_blank" href="/minichan/roamaction.jsp?id=158">助学金查询</a><dt><a target="_blank" href="/minichan/roamaction.jsp?id=156">银行代发查询</a><dt><a
+															 target="_blank" href="/minichan/roamaction.jsp?id=461">自助报账(基金会)</a></dl>
+												</div>
+											</div>
+											<div class="col_1">
+												<ul>
+													<p><a target="_blank" href="/minichan/roamaction.jsp?id=157">银行代发查询(基金会)</a></p>
+												</ul>
+											</div>
+											<div class="col_1">
+												<ul>
+													<p><a target="_blank" href="/minichan/roamaction.jsp?id=159">IC卡交易查询与挂失</a></p>
+												</ul>
+											</div>
+											<div class="col_1">
+												<div class="con_1_txt">
+													<dl><dt><a target="_blank" href="/minichan/roamaction.jsp?id=160">交费信息</a><dt><a target="_blank" href="/minichan/roamaction.jsp?id=161">银行账号</a></dl>
+												</div>
+											</div>
+											<div class="col_1">
+												<div class="con_1_txt">
+													<dl><dt><a target="_blank" href="/minichan/roamaction.jsp?id=356">收费标准</a><dt><a target="_blank" href="/minichan/roamaction.jsp?id=192">统一银行代发</a></dl>
+												</div>
+											</div>
+											<div class="col_1">
+												<ul>
+													<p><a target="_blank" href="/minichan/roamaction.jsp?id=497">电子发票下载</a></p>
+												</ul>
+											</div>
+										</div>
+									<li>
+										<h3 class="menu_arrow"><span>毕业专栏</span></h3><a target="_blank" class="left" href="http://zhjw.cic.tsinghua.edu.cn/portal3rd.do?url=/portal3rd.do&amp;m=bksZhlwxl">综合论文训练</a>
+										<div class="clear"></div><a target="_blank" class="left" href="http://career.tsinghua.edu.cn/">招聘信息</a><a
+										 target="_blank" class="left" href="http://career.tsinghua.edu.cn/">今日招聘会</a>
+										<div class="clear"></div><a target="_blank" class="left" href="/minichan/roamaction.jsp?id=173">离校办理</a><a
+										 target="_blank" class="left" href="/minichan/roamaction.jsp?id=172">就业手续办理</a>
+										<div class="clear"></div>
+										<div class="dropdown_4columns">
+											<div class="col_1">
+												<div class="con_1_txt">
+													<dl><dt><a target="_blank" href="/minichan/roamaction.jsp?id=163">推研专栏</a><dt><a target="_blank" href="/minichan/roamaction.jsp?id=496">免试推研</a><dt><a
+															 target="_blank" href="http://zhjw.cic.tsinghua.edu.cn/jhBks.by_fascjgmxb_gr.do?m=queryFaScjgmx_gr&amp;xsViewFlag=pyfa&amp;pathContent=培养方案完成情况">培养方案完成情况</a></dl>
+												</div>
+											</div>
+											<p class="m_line"></p>
+											<div class="col_1">
+												<div class="con_1_txt">
+													<dl><dt><a target="_blank" href="http://zhjw.cic.tsinghua.edu.cn/portal3rd.do?url=/portal3rd.do&amp;m=bksZhlwxl">综合论文训练</a><dt><a
+															 target="_blank" href="http://zhjw.cic.tsinghua.edu.cn/wjdc.dcrwb.do?m=index">毕业调查问卷</a></dl>
+												</div>
+											</div>
+											<p class="m_line"></p>
+											<div class="col_1">
+												<h5><span class="a_t">就业信息</span></h5>
+												<div class="con_1_txt">
+													<dl><dt><a target="_blank" href="http://career.tsinghua.edu.cn/">热点关注</a><dt><a target="_blank" href="http://career.tsinghua.edu.cn/">招聘信息</a><dt><a
+															 target="_blank" href="http://career.tsinghua.edu.cn/">今日招聘会</a></dl>
+												</div>
+												<div class="con_1_txt">
+													<dl><dt><a target="_blank" href="http://career.tsinghua.edu.cn/">就业新闻</a><dt><a target="_blank" href="http://career.tsinghua.edu.cn/">就业通知</a><dt><a
+															 target="_blank" href="http://career.tsinghua.edu.cn/">就业政策</a></dl>
+												</div>
+												<ul>
+													<p><a target="_blank" href="/minichan/roamaction.jsp?id=172">就业手续办理</a></p>
+												</ul>
+											</div>
+											<p class="m_line"></p>
+											<div class="col_1">
+												<ul>
+													<p><a target="_blank" href="/minichan/roamaction.jsp?id=173">离校办理</a></p>
+												</ul>
+											</div>
+										</div>
+									<li>
+										<h3 class="menu_arrow"><span>校园生活</span></h3><a target="_blank" class="left" href="http://wx.93001.cn/home/frontAction.do?ms=gotoHealth">网上挂号</a><a
+										 target="_blank" class="left" href="http://myhome.tsinghua.edu.cn/Netweb_List/Netweb_Home_Postbox_ListMore.html">邮条查看</a><a
+										 target="_blank" class="left" href="/minichan/roamaction.jsp?id=424">体育场馆预约</a>
+										<div class="clear"></div><a target="_blank" class="left" href="http://wx.93001.cn/home/frontAction.do?ms=gotoFix">网上报修</a>
+										<div class="clear"></div>
+										<div class="dropdown_4columns_up">
+											<div class="col_1">
+												<div class="con_1_txt">
+													<dl><dt><a target="_blank" href="http://wx.93001.cn/home/frontAction.do?ms=gotoHealth">网上挂号</a><dt><a
+															 target="_blank" href="http://myhome.tsinghua.edu.cn/Netweb_List/Netweb_Home_Postbox_ListMore.html">邮条查看</a></dl>
+												</div>
+											</div>
+											<div class="col_1">
+												<div class="con_1_txt">
+													<dl><dt><a target="_blank" href="http://wx.93001.cn/home/frontAction.do?ms=gotoFix">网上报修</a></dl>
+												</div>
+											</div>
+											<div class="col_1">
+												<div class="con_1_txt">
+													<dl><dt><a target="_blank" href="http://myhome.tsinghua.edu.cn/Netweb_List/Netweb_Home_Lose_List.html">失物招领</a><dt><a
+															 target="_blank" href="http://wx.93001.cn/home/frontAction.do?ms=gotoFood">餐饮服务</a></dl>
+												</div>
+											</div>
+											<div class="col_1">
+												<div class="con_1_txt">
+													<dl><dt><a target="_blank" href="http://wx.93001.cn/home/frontAction.do?ms=gotoHotel">住宿服务</a><dt><a
+															 target="_blank" href="http://wx.93001.cn/home/frontAction.do?ms=gotoTel">电话查询</a></dl>
+												</div>
+											</div>
+											<div class="col_1">
+												<div class="con_1_txt">
+													<dl><dt><a target="_blank" href="/minichan/roamaction.jsp?id=424">体育场馆预约</a></dl>
+												</div>
+											</div>
+										</div>
+									<li>
+										<h3 class="menu_arrow"><span>公共服务及其他</span></h3><a target="_blank" class="left" href="/minichan/roamaction.jsp?id=389">网络账号管理</a><a
+										 target="_blank" class="left" href="/minichan/roamaction.jsp?id=101">虚拟空间</a>
+										<div class="clear"></div><a target="_blank" class="left" href="/minichan/roamaction.jsp?id=391">软件资源</a><a
+										 target="_blank" class="left" href="/minichan/roamaction.jsp?id=187">集体户口卡借阅</a>
+										<div class="clear"></div><a target="_blank" class="left" href="/minichan/roamaction.jsp?id=193">党员管理</a><a
+										 target="_blank" class="left" href="http://xgmsszs.join-tsinghua.edu.cn/zsdwgl.bz_zsdwgl_zyzbmb.do?m=guide">招生志愿者报名</a>
+										<div class="clear"></div><a target="_blank" class="left" href="http://zhjw.cic.tsinghua.edu.cn/student.gfszxxb_wsbm_bmb.do?m=guide">国防生在校选拔网上报名</a>
+										<div class="clear"></div><a target="_blank" class="left" href="/minichan/roamaction.jsp?id=437">辅导员管理</a>
+										<div class="clear"></div><a target="_blank" class="left" href="/minichan/roamaction.jsp?id=440">思政信息管理</a>
+										<div class="clear"></div><a target="_blank" class="left" href="/minichan/roamaction.jsp?id=470">会议活动及场所管理</a>
+										<div class="clear"></div>
+										<div class="dropdown_4columns_up">
+											<div class="col_1">
+												<div class="con_1_txt">
+													<dl><dt><a target="_blank" href="/minichan/roamaction.jsp?id=389">网络账号管理</a><dt><a target="_blank" href="/minichan/roamaction.jsp?id=101">虚拟空间</a></dl>
+												</div>
+												<div class="con_1_txt">
+													<dl><dt><a target="_blank" href="http://zhjw.cic.tsinghua.edu.cn/jxmh.do?m=bks_EditGrxx">个人信息维护</a></dl>
+												</div>
+											</div>
+											<p class="m_line"></p>
+											<div class="col_1">
+												<div class="con_1_txt">
+													<dl><dt><a target="_blank" href="/minichan/roamaction.jsp?id=391">软件资源</a><dt><a target="_blank" href="/minichan/roamaction.jsp?id=187">集体户口卡借阅</a></dl>
+												</div>
+											</div>
+											<p class="m_line"></p>
+											<div class="col_1">
+												<div class="con_1_txt">
+													<dl><dt><a target="_blank" href="http://xgmsszs.join-tsinghua.edu.cn/zsdwgl.bz_zsdwgl_zyzbmb.do?m=guide">招生志愿者报名</a></dl>
+												</div>
+											</div>
+											<p class="m_line"></p>
+											<div class="col_1">
+												<div class="con_1_txt">
+													<dl><dt><a target="_blank" href="/minichan/roamaction.jsp?id=193">党员管理</a></dl>
+												</div>
+											</div>
+											<p class="m_line"></p>
+											<div class="col_1">
+												<div class="con_1_txt">
+													<dl><dt><a target="_blank" href="http://zhjw.cic.tsinghua.edu.cn/student.gfszxxb_wsbm_bmb.do?m=guide">国防生在校选拔网上报名</a></dl>
+												</div>
+											</div>
+											<p class="m_line"></p>
+											<div class="col_1">
+												<div class="con_1_txt">
+													<dl><dt><a target="_blank" href="/minichan/roamaction.jsp?id=437">辅导员管理</a></dl>
+												</div>
+											</div>
+											<p class="m_line"></p>
+											<div class="col_1">
+												<div class="con_1_txt">
+													<dl><dt><a target="_blank" href="/minichan/roamaction.jsp?id=440">思政信息管理</a></dl>
+												</div>
+											</div>
+											<p class="m_line"></p>
+											<div class="col_1">
+												<div class="con_1_txt">
+													<dl><dt><a target="_blank" href="/minichan/roamaction.jsp?id=470">会议活动及场所管理</a></dl>
+												</div>
+											</div>
+											<p class="m_line"></p>
+											<div class="col_1">
+												<div class="con_1_txt">
+													<dl><dt><a target="_blank" href="/minichan/roamaction.jsp?id=479">机关职能部门服务对象满意度调查</a></dl>
+												</div>
+											</div>
+										</div>
+									<li class="nohover">
+										<p class="m_line"></p>
+										<h3><span>设备</span></h3><a target="_blank" class="left" href="/minichan/roamaction.jsp?id=502">设备家具资产管理</a>
+										<div class="clear"></div><a target="_blank" class="left" href="/minichan/roamaction.jsp?id=195">985/211图书报销</a>
+										<div class="clear"></div><a target="_blank" class="left" href="/minichan/roamaction.jsp?id=463">试剂材料管理系统</a>
+										<div class="clear"></div><a target="_blank" class="left" href="/minichan/roamaction.jsp?id=360">设备购置管理</a>
+										<div class="clear"></div><a target="_blank" class="left" href="/minichan/roamaction.jsp?id=194">实验室开放基金申请</a>
+										<div class="clear"></div><a target="_blank" class="left" href="/minichan/roamaction.jsp?id=489">辐射安全管理系统</a>
+										<div class="clear"></div>
+										<div class="clear"></div>
+								</ul>
+							</div>
+						</div>
+					</td>
+					<td width="57%" class="column pl10">
+						<div id="9-778_table" class="tab_02 clearfix">
+							<h4><a name="9-778"><span class="left ziti">待办事宜</span></a>
+								<p style="float:right; display:inline; margin-top:10px"></p>
+							</h4>
+							<div class="tab_01" id="todo_root">
+								<ul class="nabTag" id="todo_tabs">
+									<li><a href="#" class="tag01"><span id="todo_tab_1">教学<font class="orange">(0)</font></span></a>
+									<li><a href="#"><span id="todo_tab_2">财务<font class="orange">(0)</font></span></a>
+									<li><a href="#"><span id="todo_tab_3">科研<font class="orange">(0)</font></span></a>
+									<li><a href="#"><span id="todo_tab_4">人事<font class="orange">(0)</font></span></a>
+									<li><a href="#"><span id="todo_tab_5">其它<font class="orange">(0)</font></span></a>
+								</ul>
+								<div class="tabContext" id="todo_contents">
+									<div class="contbox2" id="todo_tab_1_content">
+										<ul class="cont01">
+											（无）
+										</ul>
+									</div>
+									<div class="contbox2 hidden" id="todo_tab_2_content">
+										<ul class="cont01">
+											（无）
+										</ul>
+									</div>
+									<div class="contbox2 hidden" id="todo_tab_3_content">
+										<ul class="cont01">
+											（无）
+										</ul>
+									</div>
+									<div class="contbox2 hidden" id="todo_tab_4_content">
+										<ul class="cont01">
+											（无）
+										</ul>
+									</div>
+									<div class="contbox2 hidden" id="todo_tab_5_content">
+										<ul class="cont01">
+											（无）
+										</ul>
+									</div>
+								</div>
+							</div>
+							<script type="text/javascript" language="javascript">
+								$("#todo_tabs").find("span").mouseover(function () {
+									todo_content_id = $(this).attr("id") + "_content";
+									$("#todo_tabs > li > a").attr("class", "");
+									$(this).parent().attr("class", "tag01");
+									$("#todo_contents").find("div.contbox2").each(function () {
+										if ($(this).attr("id") == todo_content_id) {
+											$(this).show();
+										} else {
+											$(this).hide();
+										}
+									});
+								});
+								$("#todo_contents ul.cont01 div.w50").children("a,span").mouseenter(function () {
+									$(this).next().css("top", $(this).offset().top + "px").css("left", $(this).offset().left + $(this).width() +
+										"px");
+									$(this).next().slideDown();
+								});
+								$("#todo_contents ul.cont01 div.w50").mouseleave(function () {
+									$(this).children("li").slideUp();
+								});
+							</script>
+						</div>
+						<div id="9-634_table" class="tab_02 clearfix"><iframe width="100%" frameborder="no" bgcolor="#e8e8e9"
+							 marginheight="1" marginwidth="1" src="/minichan/info_student.jsp" id="9-634_iframe">
+								dummyText
+							</iframe>
+							<script type="text/javascript">
+								var height = "230";
+								var id_iframe = "9-634" + '_iframe';
+
+								// document.getElementById(id_iframe).height = document.getElementById(id_iframe).scrollHeight;
+								document.getElementById(id_iframe).height = height;
+							</script>
+						</div>
+						<div id="9-792_table" class="tab_02 clearfix">
+							<h4><a name="9-792"><span class="left ziti">教学日历</span></a>
+								<p style="float:right; display:inline; margin-top:10px"></p>
+							</h4><iframe width="100%" frameborder="no" bgcolor="#e8e8e9" marginheight="1" marginwidth="1" src="http://zhjw.cic.tsinghua.edu.cn/j_acegi_login.do?url=/jxmh.do&amp;m=bks_jxrl&amp;ticket=pm8EKA0Hpw2n01NLNLT44HNHQ6APWTCNXSD8"
+							 id="9-792_iframe">
+								dummyText
+							</iframe>
+							<script type="text/javascript">
+								var height = "200";
+								var id_iframe = "9-792" + '_iframe';
+
+								// document.getElementById(id_iframe).height = document.getElementById(id_iframe).scrollHeight;
+								document.getElementById(id_iframe).height = height;
+							</script>
+						</div>
+						<div id="9-824_table" class="tab_02 clearfix">
+							<h4><a name="9-824"><span class="left ziti">校园一卡通查询</span></a>
+								<p style="float:right; display:inline; margin-top:10px"></p>
+							</h4><iframe width="100%" frameborder="no" bgcolor="#e8e8e9" marginheight="1" marginwidth="1" src="http://ecard.tsinghua.edu.cn/user/Login.do?portal=yes&amp;ticket=pm8EKA0Hpw2n01V5EWDYQXZ5D2ZMGQRCYKHD"
+							 id="9-824_iframe">
+								dummyText
+							</iframe>
+							<script type="text/javascript">
+								var height = "220";
+								var id_iframe = "9-824" + '_iframe';
+
+								// document.getElementById(id_iframe).height = document.getElementById(id_iframe).scrollHeight;
+								document.getElementById(id_iframe).height = height;
+							</script>
+						</div>
+					</td>
+					<td width="25%" class="column pl10">
+						<div id="9-633_table" class="tab_02_no_border clearfix"><iframe width="100%" frameborder="no" bgcolor="#e8e8e9"
+							 marginheight="1" marginwidth="1" src="http://zhjw.cic.tsinghua.edu.cn/j_acegi_login.do?url=/portal3rd.do&amp;m=tsxx&amp;sjxl=true&amp;ticket=pm8EKA0Hpw2n01STMXREBQA59PTSDTGZT4H3"
+							 id="9-633_iframe">
+								dummyText
+							</iframe>
+							<script type="text/javascript">
+								var height = "110";
+								var id_iframe = "9-633" + '_iframe';
+
+								// document.getElementById(id_iframe).height = document.getElementById(id_iframe).scrollHeight;
+								document.getElementById(id_iframe).height = height;
+							</script>
+						</div>
+						<div id="9-636_table" class="tab_02_no_border clearfix"><iframe width="100%" frameborder="no" bgcolor="#e8e8e9"
+							 marginheight="1" marginwidth="1" src="/minichan/bks_grzm.jsp" id="9-636_iframe">
+								dummyText
+							</iframe>
+							<script type="text/javascript">
+								var height = "200";
+								var id_iframe = "9-636" + '_iframe';
+
+								// document.getElementById(id_iframe).height = document.getElementById(id_iframe).scrollHeight;
+								document.getElementById(id_iframe).height = height;
+							</script>
+						</div>
+						<div id="9-637_table" class="tab_02 clearfix"><iframe width="100%" frameborder="no" bgcolor="#e8e8e9"
+							 marginheight="1" marginwidth="1" src="http://zhjw.cic.tsinghua.edu.cn/j_acegi_login.do?url=/portal3rd.do&amp;m=tsxx&amp;ticket=pm8EKA0Hpw2n01YZ7A3DKT6MSVKSDCTBT82D"
+							 id="9-637_iframe">
+								dummyText
+							</iframe>
+							<script type="text/javascript">
+								var height = "130";
+								var id_iframe = "9-637" + '_iframe';
+
+								// document.getElementById(id_iframe).height = document.getElementById(id_iframe).scrollHeight;
+								document.getElementById(id_iframe).height = height;
+							</script>
+						</div>
+						<div id="9-771_table" class="tab_02 clearfix">
+							<h4><a name="9-771"><span class="left ziti">登录日志</span></a>
+								<p style="float:right; display:inline; margin-top:10px"></p>
+							</h4>
+							<html>
+
+							<head>
+								<title>UPortal - Login Log Channel</title>
+								<script src="script/utils.js" type="text/javascript"></script>
+								<script charset="GBK" src="script/loginLog.js" type="text/javascript"></script>
+								<link type="text/css" rel="stylesheet" href="/style/css/common.css">
+								<link type="text/css" rel="stylesheet" href="/style/css/page.css">
+							</head>
+
+							<body>
+								<div class="log">
+									<ul>
+										<li><span class="purple fb">最近成功登录记录</span><a href="javascript:showMore_s()"><span id="showMore_but_s">[展开]</span></a>
+										<li>
+
+											于
+											<span class="brown02">2018-11-29 16:14:39</span>
+											,从
+											<span class="brown02">101.5.134.82</span><br>
+											登录&quot;
+											新版门户
+											&quot;
+
+											成功
+
+											.
+										<li style="display:none" name="item_hidden_s">
+
+											于
+											<span class="brown02">2018-11-29 14:06:00</span>
+											,从
+											<span class="brown02">101.5.134.82</span><br>
+											登录&quot;
+											网络学堂
+											&quot;
+
+											成功
+
+											.
+										<li style="display:none" name="item_hidden_s">
+
+											于
+											<span class="brown02">2018-11-29 14:06:00</span>
+											,从
+											<span class="brown02">101.5.134.82</span><br>
+											登录&quot;
+											网络学堂
+											&quot;
+
+											成功
+
+											.
+										<li style="display:none" name="item_hidden_s">
+
+											于
+											<span class="brown02">2018-11-29 08:32:48</span>
+											,从
+											<span class="brown02">101.5.115.153</span><br>
+											登录&quot;
+											网络学堂
+											&quot;
+
+											成功
+
+											.
+										<li style="display:none" name="item_hidden_s">
+
+											于
+											<span class="brown02">2018-11-29 08:32:48</span>
+											,从
+											<span class="brown02">101.5.115.153</span><br>
+											登录&quot;
+											网络学堂
+											&quot;
+
+											成功
+
+											.
+										<li><span class="purple fb">最近失败登录记录</span><a href="javascript:showMore_f()"><span id="showMore_but_f">[展开]</span></a>
+										<li>
+
+											于
+											<span class="brown02">2018-11-23 23:32:08</span>
+											,从
+											<span class="brown02">59.66.197.32</span><br>
+											登录&quot;
+											网络学堂
+											&quot;
+
+											失败
+
+											.
+										<li style="display:none" name="item_hidden_f">
+
+											于
+											<span class="brown02">2018-11-23 23:32:08</span>
+											,从
+											<span class="brown02">59.66.197.32</span><br>
+											登录&quot;
+											网络学堂
+											&quot;
+
+											失败
+
+											.
+										<li style="display:none" name="item_hidden_f">
+
+											于
+											<span class="brown02">2018-11-23 19:24:32</span>
+											,从
+											<span class="brown02">101.5.242.97</span><br>
+											登录&quot;
+											网络学堂
+											&quot;
+
+											失败
+
+											.
+										<li style="display:none" name="item_hidden_f">
+
+											于
+											<span class="brown02">2018-11-23 19:24:32</span>
+											,从
+											<span class="brown02">101.5.242.97</span><br>
+											登录&quot;
+											网络学堂
+											&quot;
+
+											失败
+
+											.
+										<li style="display:none" name="item_hidden_f">
+
+											于
+											<span class="brown02">2018-11-23 16:33:55</span>
+											,从
+											<span class="brown02">183.172.217.227</span><br>
+											登录&quot;
+											新版教学门户中文站
+											&quot;
+
+											失败
+
+											.
+									</ul>
+								</div>
+							</body>
+
+							</html>
+						</div>
+					</td>
+				</tr>
+			</table>
+		</div>
+		<div style="text-align:center; min-height:300px; overflow:hidden; margin-top:50px;"><span>技术支持：<a target="_blank"
+				 href="http://info.itc.tsinghua.edu.cn/">清华大学信息化技术中心</a></span><br><span>服务平台：<a target="_blank" href="http://its.tsinghua.edu.cn/">http://its.tsinghua.edu.cn/</a><img
+				 width="8" src="media/org/jasig/portal/layout/AL_TabColumn/integratedModes/purple/skin/transparent.gif">管理员信箱：<a
+				 target="_blank" href="mailto:its@tsinghua.edu.cn">its@tsinghua.edu.cn</a><img width="8" src="media/org/jasig/portal/layout/AL_TabColumn/integratedModes/purple/skin/transparent.gif">服务热线：62784859/62771940</span></div>
+	</div>
+</body>
+
+</html>

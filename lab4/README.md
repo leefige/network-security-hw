@@ -107,9 +107,7 @@ John the Ripper工具在破译时会首先用字典尝试常见的密码，在�
 
 通过调研、实验操作等各种手段，给出你所认为的认证方法和过程（包括SSO），指出可能的威胁（给出具体的攻击方法，尽可能验证）
 
-### 0) 实验背景
-
-#### 清华校园网联网方式
+### 清华校园网联网方式
 
 当前清华校园网包括有线的Ethernet（支持IPv4和IPv6，仅考虑IPv4）和无线网络（Tsinghua, Tsinghua 5G, 不考虑DIVI等支持IPv6协议栈的无线连接）。联网过程分为如下步骤：
 
@@ -119,17 +117,19 @@ John the Ripper工具在破译时会首先用字典尝试常见的密码，在�
 
 清华校园网支持的认证方式主要有两种：1）通过web页面进行认证；2）通过客户端进行认证。本实验将对PC端上两种认证方式进行分析
 
-#### 实验平台
+### 实验平台
 
 - OS: Windows 10 Professional Build 1809
 - 浏览器: Microsoft Edge 44.17763.1.0
 - 认证客户端: TUnet 2015版
 
-### 1) Web页面认证（Wireless）
+### 校园网身份认证方式分析
+
+#### 1) Web页面认证（Wireless）
 
 当前清华校园无线网的web页面认证已经支持HTTPS，下面的分析均基于HTTPS，通过验证，HTTP的过程相似。
 
-#### 工具配置
+##### 工具配置
 
 为了监听HTTPS链接的内容，使用了`Fiddler`工具，通过MITM（中间人攻击）类似方法，由`Fiddler`生成一个CA根证书，信任该证书后，即可由`Fiddler`为站点签发证书，从而实现HTTPS监听。
 
@@ -146,11 +146,11 @@ John the Ripper工具在破译时会首先用字典尝试常见的密码，在�
 
 ![](fig/web/decrypt.PNG)
 
-#### 过程分析
+##### 过程分析
 
 下面具体分析认证过程（无线网络）。截获的部分脚本保存在`code/`目录下，下文提到的脚本均位于此处。
 
-##### 1. 登录
+###### 1. 登录
 
 首先，在浏览器中访问`https://net.tsinghua.edu.cn`，该站点会将用户重定向到`https://net.tsinghua.edu.cn/wireless`，该站点的response为我们熟悉的认证页面
 
@@ -284,7 +284,7 @@ $(document).ready(function() {
 
 ![](fig/web/success.jpg)
 
-##### 2. 登出
+###### 2. 登出
 
 登出时，只需点击页面上的“断开链接”按钮，这会调用`succeed.js`中的`do_logout()`函数
 
@@ -310,7 +310,7 @@ function do_logout() {
 
 ![](fig/web/logout.PNG)
 
-##### 3. 在HTTP上的情况
+###### 3. 在HTTP上的情况
 
 在HTTP下情况类似，登录时同样用了MD5对用户名加密
 
@@ -320,13 +320,13 @@ function do_logout() {
 
 ![](fig/web/http_cookie.jpg)
 
-### 2) Web页面认证（Ethernet）
+#### 2) Web页面认证（Ethernet）
 
 近期似乎由于校园网的一些变动，直接接入交换机的Ethernet需要通过`auth4.tsinghua.edu.cn`验证，而非像无线网络一样使用`net.tsinghua.edu.cn`，经过检验，实际上有很多不同之处。
 
-#### 过程分析
+##### 过程分析
 
-##### 登录
+###### 登录
 
 类似的，抓包结果如下
 
@@ -509,7 +509,7 @@ function do_logout() {
 
 ![](fig/ether/3.success.PNG)
 
-##### 登出
+###### 登出
 
 登出时使用同一js脚本，只是表单变了。登出表单处理如下：
 
@@ -541,11 +541,11 @@ function do_logout() {
 
 ![](fig/ether/4.logout.PNG)
 
-### 3) 客户端(SRUN)认证
+#### 3) 客户端认证（TUnet 2015）
 
 似乎由于Ethernet使用新的协议，原有客户端（2015版）不再兼容，因此只实验无线网。对于客户端，`Fiddler`未能成功抓取到其流量，于是使用`Wireshark`抓取流量，抓到的包位于`package/`目录下。
 
-#### 过程分析
+##### 过程分析
 
 首先，为了限定抓包范围，希望获取本机IP地址和认证服务器IP地址。本机地址可以用`ipconfig`查看，服务器地址用`dig`查看，地址为`166.111.204.120`
 
@@ -555,7 +555,7 @@ $ dig net.tsinghua.edu.cn
 
 ![](fig/client/dig.PNG)
 
-##### 登录
+###### 登录
 
 通过添加过滤条件，抓取的与认证服务器通信的流量如下：
 
@@ -574,7 +574,7 @@ $ dig net.tsinghua.edu.cn
     ![](fig/client/3.post.jpg)
     可见这里的密码已经是加密过的了
 
-##### 登出
+###### 登出
 
 登出过程抓取的流量如下
 
@@ -590,13 +590,99 @@ $ dig net.tsinghua.edu.cn
 
 利用POST提交了logout的请求，同时还发送了用户名和mac地址，推测用于定位要下线的用户。
 
-### 4) PC端三种认证方式比对
+#### 4) 客户端认证（802.1x）
+
+【待补充】
+
+#### 5) PC端四种认证方式比对
 
 目前的无线网认证是安全性能最低的，尤其是其允许HTTP传输，若用户选择了本地保存密码，则其信息将在cookie中被明文传输，非常脆弱。
 
 客户端和新的Ethernet认证方式都比较安全，明文不会以任何形式出现在链路上。相较而言，可能客户端又更为安全，因为通过专用的TCP连接进行通信，而且客户端可拓展性更强，可能可以支持更多功能（如超时自动下线等）。
 
-### 5) 存在的漏洞和可能的攻击方案
+【待补充】
+
+### 校园网单点登录（SSO）分析
+
+经过观察和实验，我们发现的一种清华校园网支持的SSO情景为：登录info后，从info“综合”页面左侧的菜单直接进入“网络学堂”，这时网络学堂是免登录的，即实现了SSO。下面的分析主要基于这一情景。
+
+#### 登录info
+
+首先试图从Edge浏览器中登录info，并尝试用HTTPS方式，但页面无法正确加载，浏览器显示“页面存在不安全内容”，这时选择“显示全部”，即可加载完整的info页面。抓到的流量如下：
+
+![](fig/sso/info.PNG)
+
+可以看到有些内容是HTTPS传输的，但仍然存在很多只支持HTTP的内容，这些内容都是info页面的组成部分。事实上，用Chrome的插件“HTTPS Everywhere”强制禁止所有非HTTPS内容，可以看到info页面会有部分内容无法加载（如“校园一卡通查询”），这些内容就是不支持HTTPS的组成部分。
+
+![](fig/sso/1.block.PNG)
+
+输入用户名和密码后，登录info，会发送如下POST表单：
+
+```js
+<form id="login-form" action='https://info.tsinghua.edu.cn:443/Login' method="post">
+    <input type="hidden" name="redirect" value="NO" />
+    <td class="username">�û����� </td>
+    <td class="srk"><input name="userName" id="userName" type="text" size="15" class="text" /></td>
+    <td class="username">��&nbsp;&nbsp;�룺</td>
+    <td class="srk"><input name="password" type="password" size="14" class="text" /></td>
+    <td class="but" style="width:140px;">
+        <input type="image" src="initial/all/images/t_09.gif" />&nbsp;
+        <a href="https://id.tsinghua.edu.cn/f/recovery/password/reset" target="_blank">��������</a>
+    </td>
+</form>
+```
+
+![](fig/sso/1.login.jpg)
+
+可见发送的事实上是用户名和密码的 **明文** ，所以一定要使用HTTPS登录info！但是info本身又内嵌了许多不支持HTTPS的组成部分，这会给用户带来一定的安全隐患。
+
+登录成功后，会重定向到info的web页面。
+
+#### 基于ticket的SSO
+
+##### 从info登录网络学堂
+
+在登录info后，若点击左侧菜单里的“网络学堂”，就可以直接登录网络学堂而不需要再输入用户名和密码，该处的HTML如下
+
+```html
+<a target="_blank" class="left" href="/minichan/roamaction.jsp?id=105">网络学堂</a>
+```
+
+经过对抓取的流量进行分析，点击按钮后，向`/minichan/roamaction.jsp`发起了请求，参数为`id=105`，表示需要漫游的目标的代号。该请求及回复如下：
+
+![](fig/sso/2.roam.PNG)
+
+需要注意的是，SSO登录请求还需要 **cookie的支持** ，如上图，cookie中携带了一个`UPORTALINFONEW`值，这个值用于SSO服务器验证当前session的有效性（真实且未过期）。
+
+随后跳转至response中的目标地址，注意到该目标地址为网络学堂`http://learn.tsinghua.edu.cn/roam.jsp`，同时携带了一个参数 **`ticket`**，即“票据”，它类似课上讲到的session ticket，用于一次验证成功后多次验证，而不需要重新协商，减轻负载加快访问速度。
+
+这时重定向到上面得到的URL，即用ticket对网络学堂`learn.tsinghua.edu.cn`发出GET请求，结果如下：
+
+![](fig/sso/2.ticket.PNG)
+
+可以看到，在用ticket请求后，对方服务器发回新的重定向URL，这是网络学堂页面加载的过程之一，随后将继续多次重定向并最终打开网络学堂，说明已经成功登录网络学堂。
+
+##### info的模块加载
+
+事实上这种方法在info中有很多应用。info页面由若干模块组成，如成绩，课表等，它们事实上分属不同的服务，由不同的域名负责，而且这些服务均需要登录。但是用户只需要登录info，这些服务就会自动登录认证并加载内容。这都是依靠前文提到的基于ticket的SSO方法实现的。info页面加载过程中的部分SSO流量如下所示
+
+![](fig/sso/1.roam.PNG)
+
+例如“教学日历”部分代码如下：
+
+```html
+<div id="9-792_table" class="tab_02 clearfix">
+    <h4><a name="9-792"><span class="left ziti">教学日历</span></a></h4>
+    <iframe width="100%" frameborder="no" bgcolor="#e8e8e9" marginheight="1" marginwidth="1"
+        src="http://zhjw.cic.tsinghua.edu.cn/j_acegi_login.do?url=/jxmh.do&amp;m=bks_jxrl&amp;ticket=pm8EKA0Hpw2n01NLNLT44HNHQ6APWTCNXSD8" id="9-792_iframe">
+        dummyText
+    </iframe>
+</div>
+```
+
+其中的`iframe`即为该模块，其`src`指向了获取日历的目标地址，其中携带了GET参数`ticket=pm8EKA0Hpw2n01NLNLT44HNHQ6APWTCNXSD8`，该参数为这一次登录info后获得的ticket，可以用它登录目标服务并获取内容。
+
+### 校园网存在的漏洞和可能的攻击方案
 
 【待补充】
 
@@ -607,3 +693,9 @@ $ dig net.tsinghua.edu.cn
 \[2\] [突破https——https抓包](https://blog.csdn.net/justfwd/article/details/78767328)
 
 \[3\] [Fiddler抓取https设置详解](https://www.cnblogs.com/joshua317/p/8670923.html)
+
+\[4\] [教学科研区无线网说明-清华大学信息化用户服务平台](https://its.tsinghua.edu.cn/helpsystem/wifi/NewWifiInstruction20181011.pdf)
+
+\[5\] [无线校园网802.1x认证登录配置说明](https://its.tsinghua.edu.cn/helpsystem/wifi/tsinghua-secure-instruction20180905.pdf)
+
+\[6\] [单点登录SSO的实现方式](https://blog.csdn.net/qq_30788949/article/details/79002652)
