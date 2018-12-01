@@ -11,6 +11,7 @@ test:$6$dRf2Gldj$W4DfAK9vGyz9XCCJrsPOtR7tgf3q6lDH92k
 E2WKHNXZHfmu7dKFgo5M72jrL2hXJjxcdg596WsWPYYgGr
 mPZp1:17107:0:99999:7:::
 ```
+
 请破解口令明文
 
 > 提示：该口令只有5个ASCII字符
@@ -192,10 +193,11 @@ John the Ripper工具在破译时会首先用字典尝试常见的密码，在�
     </div>
 </body>
 ```
+
 在`login.js`中，`do_login()`定义为
 
 ```js
-function do_login() { 	
+function do_login() {
     var uname = $('#uname').val();
     var pass = $('#pass').val();
     var ac_id = $('#ac_id').val();
@@ -212,38 +214,37 @@ function do_login() {
     }
     //var topost = "action=login&username=" + uname + "&password={MD5_HEX}" + CryptoJS.MD5(pass) +
     var topost = "action=login&username=" + uname + "&password={MD5_HEX}" + hex_md5(pass) +
-        "&ac_id="+ac_id;
-	//alert(topost);
+        "&ac_id=" + ac_id;
+    //alert(topost);
     //var res = post('/do_login.php', topost);
-    $.post("/do_login.php", topost, function(res) {
-   	if(res == "Login is successful.") {
+    $.post("/do_login.php", topost, function (res) {
+        if (res == "Login is successful.") {
             nav = navigator.userAgent.toLowerCase();
             var pp_nav = /safari/;
             var pp_mac = /mac/;
-            if(pp_nav.test(nav) || (!pp_mac.test(nav))) {
-            	if ($('#cookie')[0].checked) {
-            	    $.cookie('tunet', uname + '\n' + pass,
-            	        { expires: 365, path: '/' });
-            	} else {
-            	    $.cookie('tunet', null);
-            	}
+            if (pp_nav.test(nav) || (!pp_mac.test(nav))) {
+                if ($('#cookie')[0].checked) {
+                    $.cookie('tunet', uname + '\n' + pass, {
+                        expires: 365,
+                        path: '/'
+                    });
+                } else {
+                    $.cookie('tunet', null);
+                }
             }
-            window.location="succeed.html";
-	} else if(res == "IP has been online, please logout.") {
+            window.location = "succeed.html";
+        } else if (res == "IP has been online, please logout.") {
             alert("您已在线了");
-	} else {
+        } else {
             var msg111 = get_err(res);
-                        if(msg111 == "用户被禁用或无联网权限")
-                        {
-                                alert(res+" or max_online_num=0" + "("+msg111+")")
-                        }
-                        else
-                        {
-                                alert(res+"("+msg111+")");
-                        }
+            if (msg111 == "用户被禁用或无联网权限") {
+                alert(res + " or max_online_num=0" + "(" + msg111 + ")")
+            } else {
+                alert(res + "(" + msg111 + ")");
+            }
 
         }
-    }); 
+    });
 }
 ```
 
@@ -257,16 +258,16 @@ function do_login() {
 
 ```js
 $(document).ready(function() {
-	var r = post('/rad_user_info.php');
+    var r = post('/rad_user_info.php');
     var a = r.split(',');
     $('#uname').text(a[0]);
     var f = a[6] / 1000000000;
     if (f <=25) {
         len = f * 106 / 25
     } else if (f >25 && f <=55) {
-	len = 106 + (f - 25) * (53 * 3) / 30
+    len = 106 + (f - 25) * (53 * 3) / 30
     } else {
-	len = 280
+    len = 280
     }
     //tm = Number(a[4]);
     tm = Number(a[2]-a[1]);
@@ -290,19 +291,19 @@ $(document).ready(function() {
 
 ```js
 function do_logout() {
-	var topost = "action=logout";
+    var topost = "action=logout";
     var res = post('/do_login.php', topost);
-	if(res == "Logout is successful.")
-	{
-		alert("连接已断开");
-        	window.location.href="/";
-	}
-	else
-	{
-		alert(res);
-	}
-	
-	return;
+    if(res == "Logout is successful.")
+    {
+        alert("连接已断开");
+        window.location.href="/";
+    }
+    else
+    {
+        alert(res);
+    }
+
+    return;
 }
 ```
 
@@ -702,27 +703,37 @@ $ dig net.tsinghua.edu.cn
 
 ### 校园网存在的漏洞和可能的攻击方案
 
-#### 监听未加密的HTTP登录请求窃取用户名和密码
+#### 通过中间人攻击(MITM)监听HTTP登录请求窃取用户名和密码
 
-【待补充】
+`Fiddler`的流量监听事实上模拟了中间人攻击。正如之前分析的，即使中间人攻击无法破解HTTPS，也存在以下风险：
+
+1. 用户使用HTTP的web身份认证方式进行校园无线网(`http://net.tsinghua.edu.cn`)，此时发送的请求中携带cookie，而cookie用明文记录了用户名和密码，中间人可以直接窃取
+2. 用户使用HTTP登录info，登录时发送的POST表单用明文发送用户名和密码，中间人可以直接窃取
 
 #### 通过中间人攻击(MITM)窃取cookie绕过认证
 
-【文字待补充】
+进一步的，如果用户使用HTTPS进行校园网认证和info登录，攻击者是否还有攻击机会呢？
 
-![](fig/hack/https+http.PNG)
+在这里我们继续基于中间人攻击进行流量监听，试图通过监听窃取cookie，并利用SSO绕过用户名和密码的认证，直接登录被攻击者的网络学堂。
 
-![](fig/hack/1.roam.PNG)
+在本实验中主要以验证可行性为主，因此对于中间人攻击使用了`Fiddler`模拟，用本机的两个浏览器模拟hacker（Chrome）和victim（Edge），`Fiddler`使用 **不解密HTTPS** 的模式，也即攻击直接针对HTTP通信，更具有普适性。
 
-![](fig/hack/2.105.PNG)
+下面具体介绍攻击步骤：
 
-![](fig/hack/3.105.png)
-
-![](fig/hack/4.105.PNG)
-
-![](fig/hack/5.105.PNG)
-
-![](fig/hack/6.success.PNG)
+1. 首先使用`Fiddler`监听victim的流量，模拟中间人攻击，victim（Edge）登录`https://info.tsinghua.edu.cn`，这时通过流量可以看到，关键的登录步骤是通过HTTPS发送的，无法监听到提交用户名和密码的表单。但是如前文所述，info页面其实有很多部分并不支持HTTPS，还是有很多组分通过HTTP进行通信，这就给了攻击者可乘之机。
+    ![](fig/hack/https+http.PNG)
+2. 我们从监听到的HTTP流量中，随意选取一个通过`minichan/roamaction.jsp`方式进行SSO登录的流量，抓取其 **明文cookie** ，如图所示，cookie包括两个部分：`thewebcookie`和`UPORTALINFONEW`
+    ![](fig/hack/1.roam.PNG)
+3. 这时我们在hacker（Chrome浏览器）上尝试通过SSO登录网络学堂，如图，网络学堂的漫游id为105，我们直接输入这个URL试图登录，可以看到“尚未登陆或会话已超时”的response，这是因为我们没有提交正确的cookie
+    ![](fig/hack/2.105.PNG)
+4. 我们利用Chrome自带的工具复制这个请求
+    ![](fig/hack/3.105.png)
+5. 将这个请求复制到shell中，直接通过curl来请求会得到与上面相同的结果
+    ![](fig/hack/4.105.PNG)
+6. 但是如果我们把请求中的cookie内容替换为通过中间人攻击窃取的cookie，再通过curl请求，就会得到携带着正确 **ticket** 的目标URL（指向网络学堂）
+    ![](fig/hack/5.105.PNG)
+7. 用hacker访问这个URL，可以看到已经绕过认证登录了victim的网络学堂，攻击成功。但是victim事实上的确使用HTTPS进行了登录和认证，甚至根本没有登陆过网络学堂，只是单纯登录了info就已经将自己暴露在了被攻击的风险之中。
+    ![](fig/hack/6.success.PNG)
 
 ### Reference
 
@@ -736,4 +747,6 @@ $ dig net.tsinghua.edu.cn
 
 \[5\] [无线校园网802.1x认证登录配置说明](https://its.tsinghua.edu.cn/helpsystem/wifi/tsinghua-secure-instruction20180905.pdf)
 
-\[6\] [单点登录SSO的实现方式](https://blog.csdn.net/qq_30788949/article/details/79002652)
+\[6\] [802.1x认证详细剖析](https://blog.csdn.net/banruoju/article/details/78050098?locationNum=10&fps=1)
+
+\[7\] [单点登录SSO的实现方式](https://blog.csdn.net/qq_30788949/article/details/79002652)
