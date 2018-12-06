@@ -71,7 +71,7 @@ $id$salt$encrypted
 
 #### 实验平台
 
-Ubuntu 16.04 LST, 24 cores.
+Ubuntu 16.04 LST, 24 CPU cores.
 
 #### 工具安装
 
@@ -611,7 +611,75 @@ $ dig net.tsinghua.edu.cn
 
 #### 4) 客户端认证（802.1x）
 
-【待补充】
+李兆基科技大楼的 Tsinghua-SECURE 使用 IEEE 802.1X-PEAP 认证。
+
+这一部分使用`Wireshark`抓取流量，抓到的包位于`package/`目录下的 `eap.pcapng`。
+
+##### 过程分析
+
+添加过滤条件，只看 EAP 包，其结果如下：
+
+![image-20181207012130246](./fig/8021x/overall.png)
+
+其具体分析如下：
+
+###### 认证初始化
+
+1. 申请者向认证者发送EAPOL-start报文，开始802.1X接入的开始
+
+2. 认证者向申请者发送EAPOL-request/identity报文，要求申请者将用户信息送上来
+
+   ![image-20181207012410360](./fig/8021x/1.png)
+
+3. 申请者回应认证者发送EAPOL-response/identity报文。其中包含用户名 qiaoyf15：
+
+   ![image-20181207012536641](./fig/8021x/2.png)
+
+4. 认证者生成一个加密字，并将将此加密字的通过数据帧(EAP-Request/MD5Challenge报文)交给申请者：
+
+   ![image-20181207012738422](./fig/8021x/3.png)
+
+5. 申请者收到加密字(EAP-Request/MD5Challenge报文)后，用该加密字对口令部分进行加密处理，生成EAP-Response/MD5Challenge报文发送给认证者：
+
+   ![image-20181207013511148](./fig/8021x/4.png)
+
+6. 认证者向申请者发送EAP-request/peap/start报文：
+
+   ![image-20181207013557557](./fig/8021x/5.png)
+
+###### 建立TLS通道
+
+![20180209140342156](./fig/8021x/tls.png)
+
+1. 申请者收到EAP-request/peap/start报文，产生一个**随机数、客户端支持的加密算法列表、TLS协议版本、会话ID、以及压缩方法（目前均为NULL），**封装在EAP-response/TLS/clienthello报文中发送给认证者：
+
+   ![image-20181207014045824](./fig/8021x/6.png)
+
+2. 认证者总共发送server hello，certificate，server key exchange，server hello done四组数据。由于数据太长，所以进行分段处理。（16，19，21）
+
+   申请者使用EAP-response/protected EAP报文进行响应，直到接收最后一片。（17，20）
+
+3. 申请者收到报文后，进行验证server的证书是否合法（使用刚从CA证书颁发机构获得的根证书进行验证，主要验证证书时间是否合法，名称是否合法），即对网络进行认证，从而可以保证server的合法。如果合法，提取server证书中的公钥，同时产生一个随机密码串pre-master-secret，并使用服务器的公钥对其进行加密，最后将加密的信息clientkeyexchange + 客户端的证书（如果没有证书，可以把属性置为0） + TLS finished属性封装成EAP-response/TLS clientkeyexchange报文发送给认证者：
+
+   ![image-20181207014922459](./fig/8021x/8.png)
+
+4. 认证服务器收到报文后，用自己的证书对应的私钥对clientkeyexchange进行解密，从而获得pre-master-secret，然后对pre-master-secret进行运算处理，加上申请者和server产生的随机数，生成加密密钥、加密初始化向量和hmac的密钥，这时双方已经安全的协商出一套加密办法了。认证服务器将协商出的加密方法 + TLS finished消息封装在EAP over RADIUS 的报文access-challenge中，发送给认证者。认证者切换到认证者将认证服务器发送的报文，发送给申请者：
+
+   ![image-20181207015354349](./fig/8021x/10.png)
+
+5. 申请者回复认证者EAP-response/TLSOK：
+
+   ![image-20181207015045289](./fig/8021x/9.png)
+
+6. 认证者将EAP-response/TLSOK消息封装在radius报文中，发送给认证服务器，告知服务器申请者和认证服务器之间的TLS隧道建立成功。至此，隧道建立完毕，申请者和认证服务器之间使用协商的密钥进行加密传输，然后进行验证。
+
+###### 认证
+
+1. 认证者将radius报文中的EAP域提取，封装成EAP-request报文发送给申请者。申请者受到报文后，用服务器相同的方法生成加密密钥。加密初始化向量和hmac的密钥，并用相应的密钥及其方法对报文进行解密和校验，然后产生认证回应报文，用密钥进行加密和校验，最后封装成EAP-response报文发送给认证者，认证者转发给认证服务器，并带上相关的RADIUS的属性，这样反复进行交互，直到认证完成。在认证过程中，认证服务器会下发认证后用于生成空口数据加密密钥PMK给申请者。这中间 application data 的交换过程可能执行多次，直至成功。（26～33）
+
+2. 服务器认证客户端成功后，会发送一个RADIUS-access-accept给认证者，并包含认证服务器提供的MPPE属性（vendor specific）。认证者收到RADIUS-access-accept报文，会提取MPPE属性中的密钥作为WPA加密用的PMK，并且会发送EAP-SUCCESS报文给申请者：
+
+   ![image-20181207020538016](./fig/8021x/11.png)
 
 #### 5) PC端四种认证方式比对
 
@@ -619,7 +687,7 @@ $ dig net.tsinghua.edu.cn
 
 客户端和新的Ethernet认证方式都比较安全，明文不会以任何形式出现在链路上。相较而言，可能客户端又更为安全，因为通过专用的TCP连接进行通信，而且客户端可拓展性更强，可能可以支持更多功能（如超时自动下线等）。
 
-【802.1x待补充】
+802.1x 使用 EAP 报文，且实际数据交换时使用 TLS 隧道传输，保证了安全性。
 
 ### 校园网单点登录（SSO）分析
 
@@ -749,4 +817,7 @@ $ dig net.tsinghua.edu.cn
 
 \[6\] [802.1x认证详细剖析](https://blog.csdn.net/banruoju/article/details/78050098?locationNum=10&fps=1)
 
-\[7\] [单点登录SSO的实现方式](https://blog.csdn.net/qq_30788949/article/details/79002652)
+\[7\] [IEEE 802.1X-PEAP认证过程分析（抓包）](https://blog.csdn.net/u012503786/article/details/79296522)
+
+\[8\] [单点登录SSO的实现方式](https://blog.csdn.net/qq_30788949/article/details/79002652)
+
