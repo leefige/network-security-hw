@@ -651,7 +651,7 @@ $ dig net.tsinghua.edu.cn
 
 ![20180209140342156](./fig/8021x/tls.png)
 
-1. 申请者收到EAP-request/peap/start报文，产生一个**随机数、客户端支持的加密算法列表、TLS协议版本、会话ID、以及压缩方法（目前均为NULL），**封装在EAP-response/TLS/clienthello报文中发送给认证者：
+1. 申请者收到EAP-request/peap/start报文，产生一个 **随机数、客户端支持的加密算法列表、TLS协议版本、会话ID、以及压缩方法（目前均为NULL），** 封装在EAP-response/TLS/clienthello报文中发送给认证者：
 
    ![image-20181207014045824](./fig/8021x/6.png)
 
